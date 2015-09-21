@@ -9,20 +9,6 @@
 
   var filterMap;
 
-
-    //взял функцию https://learn.javascript.ru/cookie для вычленения значения куки
-  function getCookie(name) {
-      var matches = document.cookie.match(new RegExp(
-        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-      ));
-      return matches ? decodeURIComponent(matches[1]) : undefined;
-  }
-   
-//применяем фильтр
-  window.onload = function myfunction() {
-      previewImage.className = 'filter-image-preview' + ' ' + filterMap[getCookie('filter')];
-  }
-
   function setFilter() {
     if (!filterMap) {
       filterMap = {
@@ -31,14 +17,18 @@
         'sepia': 'filter-sepia'
       };
     }
-
     previewImage.className = 'filter-image-preview' + ' ' + filterMap[selectedFilter.value];
   };
-
+ 
   for (var i = 0, l = selectedFilter.length; i < l; i++) {
     selectedFilter[i].onchange = function(evt) {
       setFilter();
     }
+  }
+  
+  if (docCookies.getItem('filter')) {
+      document.getElementById("upload-filter-"+docCookies.getItem('filter')).checked = true;
+      setFilter();
   }
 
   prevButton.onclick = function(evt) {
@@ -49,13 +39,11 @@
     resizeForm.classList.remove('invisible');
   };
 
-  filterForm.onsubmit = function() {
+  filterForm.onsubmit = function () {   
     evt.preventDefault();
 
     uploadForm.classList.remove('invisible');
     filterForm.classList.add('invisible');
   }
-
   setFilter();
-
 })();
