@@ -40,13 +40,13 @@
         }
     }
 
-        resizeX.onchange = validate;
-        resizeY.onchange = validate;
-        resizeSize.onchange = validate;
+    resizeX.onchange = validate;
+    resizeY.onchange = validate;
+    resizeSize.onchange = validate;
 
-        resizeImage.onload = function () {
-            maxWidth = this.width;
-            maxHeight = this.height;
-        };
+    resizeImage.onload = function () {
+        maxWidth = this.width;
+        maxHeight = this.height;
+    };
     filterToCookie();
 })();
