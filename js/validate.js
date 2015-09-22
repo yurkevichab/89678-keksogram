@@ -8,7 +8,7 @@
     var resizeSize = resizeForm['resize-size'];
     var inputsFilter = filterForm['upload-filter'];
 
-    var maxWidth, maxHeight;
+    var maxWidth = 0, maxHeight = 0;
 
     resizeX.min = resizeX.value = 0;
     resizeY.min = resizeY.value = 0;
@@ -24,8 +24,8 @@
     function filterToCookie() {
         for (var i = 0; i < inputsFilter.length; i++) {
             inputsFilter[i].onclick = function () {
-                docCookies.setItem('filter', this.value, DateForCookie());
-            }
+                docCookies.setItem('filter', this.value, dateForCookie());
+            };
         }
     }
 
@@ -33,20 +33,20 @@
         var x = resizeX.value;
         var y = resizeY.value;
         var s = resizeSize.value;
-        if (((x + s) > maxwidth) || ((y + s) > maxheight)) {
-            resizeX.max = maxwidth - resizeSize.value;
-            resizeY.max = maxheight - resizeSize.value;
-            resizeSize.max = Math.min(maxwidth - resizeX.value, maxheight - resizeY.value);
+        if (((x + s) > maxWidth) || ((y + s) > maxHeight)) {
+            resizeX.max = maxWidth - resizeSize.value;
+            resizeY.max = maxHeight - resizeSize.value;
+            resizeSize.max = Math.min(maxWidth - resizeX.value, maxHeight - resizeY.value);
         }
     }
 
-        resizeX.onchange = Validate;
-        resizeY.onchange = Validate;
-        resizeSize.onchange = Validate;
+        resizeX.onchange = validate;
+        resizeY.onchange = validate;
+        resizeSize.onchange = validate;
 
-    resizeImage.onload = function () {
-        maxWidth = this.width;
-        maxHeight = this.height;
-    }
-    FilterToCookie();
+        resizeImage.onload = function () {
+            maxWidth = this.width;
+            maxHeight = this.height;
+        };
+    filterToCookie();
 })();
