@@ -27,6 +27,11 @@
     }
   }
 
+  if (docCookies.getItem('filter')) {
+      selectedFilter.value = docCookies.getItem('filter');
+      setFilter();
+  }
+
   prevButton.onclick = function(evt) {
     evt.preventDefault();
 
@@ -35,12 +40,12 @@
     resizeForm.classList.remove('invisible');
   };
 
-  filterForm.onsubmit = function() {
-    evt.preventDefault();
+  filterForm.onsubmit = function () {
+      evt.preventDefault();
 
-    uploadForm.classList.remove('invisible');
-    filterForm.classList.add('invisible');
-  }
+      uploadForm.classList.remove('invisible');
+      filterForm.classList.add('invisible');
+  };
 
   setFilter();
 })();
