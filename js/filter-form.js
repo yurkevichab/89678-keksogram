@@ -17,17 +17,18 @@
         'sepia': 'filter-sepia'
       };
     }
+
     previewImage.className = 'filter-image-preview' + ' ' + filterMap[selectedFilter.value];
   };
- 
+
   for (var i = 0, l = selectedFilter.length; i < l; i++) {
     selectedFilter[i].onchange = function(evt) {
       setFilter();
     }
   }
-  
+
   if (docCookies.getItem('filter')) {
-      document.getElementById("upload-filter-"+docCookies.getItem('filter')).checked = true;
+      selectedFilter.value = docCookies.getItem('filter');
       setFilter();
   }
 
@@ -39,11 +40,13 @@
     resizeForm.classList.remove('invisible');
   };
 
-  filterForm.onsubmit = function () {   
+  filterForm.onsubmit = function() {
     evt.preventDefault();
 
     uploadForm.classList.remove('invisible');
     filterForm.classList.add('invisible');
   }
+
   setFilter();
+
 })();

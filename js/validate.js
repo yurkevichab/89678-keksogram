@@ -1,59 +1,52 @@
 ﻿(function (){
     var resizeForm = document.forms['upload-resize'];
+    var filterForm = document.forms['upload-filter'];
 
+    var resizeImage = resizeForm.querySelector('.resize-image-preview');
     var resizeX = resizeForm['resize-x'];
     var resizeY = resizeForm['resize-y'];
     var resizeSize = resizeForm['resize-size'];
+    var inputsFilter = filterForm['upload-filter'];
 
-    var resizeImage = resizeForm.querySelector('.resize-image-preview');
+    var maxWidth, maxHeight;
 
-    var inputsFilter = document.getElementsByName('upload-filter');
+    resizeX.min = resizeX.value = 0;
+    resizeY.min = resizeY.value = 0;
+    resizeSize.min = resizeSize.value = 1;
 
-    var maxwidth, maxheight;
-
-    //формируем дату Cookie
-    function DateForCookie() {
+    function dateForCookie() {
         var date = new Date();
-        var bday = new Date(1986,4,5);
+        var bday = new Date(1986, 4, 5);
         date.setDate(date.getDate() + Math.round((date.getTime() - bday.getTime()) / (1000 * 60 * 60 * 24)));
-        return date;  
-    } 
-    //для всех input фильтра создаем событие, при нажатии записваются cookie
-    function FilterFromCookie() {
+        return date;
+    }
+
+    function filterToCookie() {
         for (var i = 0; i < inputsFilter.length; i++) {
             inputsFilter[i].onclick = function () {
                 docCookies.setItem('filter', this.value, DateForCookie());
-                // document.cookie = 'filter= ' + this.value + ';' + ' expires= ' + DateForCookie();
             }
         }
     }
 
-    function Validate() {
-        var maxX,maxY;
-        resizeX.min = resizeX.value = 1;
-        resizeY.min = resizeY.value = 1;
-        resizeSize.min = resizeSize.value = 1;
-
-        resizeX.onchange = function () {
-        resizeX.max = maxwidth - resizeSize.value;
-        }
-        resizeY.onchange = function () {
-          
+    function validate() {
+        var x = resizeX.value;
+        var y = resizeY.value;
+        var s = resizeSize.value;
+        if (((x + s) > maxwidth) || ((y + s) > maxheight)) {
+            resizeX.max = maxwidth - resizeSize.value;
             resizeY.max = maxheight - resizeSize.value;
-        }
-        resizeSize.onchange = function () {
-                var maxX = 0, maxY = 0;
-                maxX = maxwidth - resizeX.value;
-                maxY = maxheight - resizeY.value;
-                resizeSize.max = (maxX >= maxY) ? maxY : maxX;      
+            resizeSize.max = Math.min(maxwidth - resizeX.value, maxheight - resizeY.value);
         }
     }
-    //при подгрузке изображения узнаем его размер 
+
+        resizeX.onchange = Validate;
+        resizeY.onchange = Validate;
+        resizeSize.onchange = Validate;
+
     resizeImage.onload = function () {
-        maxwidth = this.width;
-        maxheight = this.height;
-        console.log(maxwidth, maxheight);
+        maxWidth = this.width;
+        maxHeight = this.height;
     }
-    Validate();
-    FilterFromCookie();
+    FilterToCookie();
 })();
