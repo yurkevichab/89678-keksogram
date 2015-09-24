@@ -25,6 +25,7 @@
             newPictureImg.style.width = '182px';
             newPictureImg.style.height = '182px';
             newPictureElement.replaceChild(newPictureImg, oldImg);
+            clearTimeout(imageLoadTimeout);
         };
 
         newPictureImg.onerror = function (){
