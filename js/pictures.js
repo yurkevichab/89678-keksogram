@@ -20,14 +20,14 @@
             newPictureElement.classList.add('picture-load-failure');
         }, 10000);
 
-        pictureImg.onload = function (){
+        newPictureImg.onload = function (){
             var oldImg = newPictureElement.querySelector('.picture img');
             newPictureImg.style.width = '182px';
             newPictureImg.style.height = '182px';
             newPictureElement.replaceChild(newPictureImg, oldImg);
         };
 
-        pictureImg.onerror = function (){
+        newPictureImg.onerror = function (){
             newPictureElement.classList.add('picture-load-failure');
         };
     });
