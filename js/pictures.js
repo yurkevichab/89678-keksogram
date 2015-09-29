@@ -1,5 +1,5 @@
-"use strict";
-(function () {
+'use strict';
+(function() {
   var ReadyState = {
     'UNSENT': 0,
     'OPENED': 1,
@@ -12,19 +12,14 @@
   var picturesContainer = document.querySelector('.pictures');
   var filters = document.querySelector('.filters');
 
-  function loadPictures(callback) {
+  function loadPictures() {
     var xhr = new XMLHttpRequest();
     xhr.timeout = REQUEST_FAILURE_TIMEOUT;
     xhr.open('Get', 'data/pictures.json');
     xhr.send();
 
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = function() {
       switch (xhr.readyState) {
-        case ReadyState.OPENED:
-        case ReadyState.HEADERS_RECEIVED:
-        case ReadyState.LOADING:
-          picturesContainer.classList.add('pictures-loading');
-          break;
         case ReadyState.DONE:
           if (xhr.status == 200) {
             if (picturesContainer.classList.contains('pictures-loading')) {
@@ -37,6 +32,12 @@
           if (xhr.status >= 400) {
             showLoadFailure();
           }
+        case ReadyState.OPENED:
+        case ReadyState.HEADERS_RECEIVED:
+        case ReadyState.LOADING:
+        default:
+          picturesContainer.classList.add('pictures-loading');
+          break;
       }
     };
     xhr.ontimeout = function () {
