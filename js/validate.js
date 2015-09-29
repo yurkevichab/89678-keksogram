@@ -1,4 +1,5 @@
-﻿(function() {
+﻿'use strict';
+(function() {
   var resizeForm = document.forms['upload-resize'];
   var filterForm = document.forms['upload-filter'];
 
