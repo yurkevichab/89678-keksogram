@@ -1,4 +1,5 @@
-(function() {
+"use strict";
+(function () {
   var uploadForm = document.forms['upload-select-image'];
   var resizeForm = document.forms['upload-resize'];
   var filterForm = document.forms['upload-filter'];
@@ -19,20 +20,20 @@
     }
 
     previewImage.className = 'filter-image-preview' + ' ' + filterMap[selectedFilter.value];
-  };
+  }
 
   for (var i = 0, l = selectedFilter.length; i < l; i++) {
-    selectedFilter[i].onchange = function(evt) {
+    selectedFilter[i].onchange = function () {
       setFilter();
-    }
+    };
   }
 
   if (docCookies.getItem('filter')) {
-      selectedFilter.value = docCookies.getItem('filter');
-      setFilter();
+    selectedFilter.value = docCookies.getItem('filter');
+    setFilter();
   }
 
-  prevButton.onclick = function(evt) {
+  prevButton.onclick = function (evt) {
     evt.preventDefault();
 
     filterForm.reset();
@@ -40,11 +41,11 @@
     resizeForm.classList.remove('invisible');
   };
 
-  filterForm.onsubmit = function () {
-      evt.preventDefault();
+  filterForm.onsubmit = function (evt) {
+    evt.preventDefault();
 
-      uploadForm.classList.remove('invisible');
-      filterForm.classList.add('invisible');
+    uploadForm.classList.remove('invisible');
+    filterForm.classList.add('invisible');
   };
 
   setFilter();

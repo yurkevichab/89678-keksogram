@@ -1,3 +1,4 @@
+"use strict";
 (function () {
   var ReadyState = {
     'UNSENT': 0,
@@ -33,7 +34,7 @@
             pictures = JSON.parse(data);
             renderPictures(pictures);
           }
-          if (xhr.status > 400) {
+          if (xhr.status >= 400) {
             showLoadFailure();
           }
       }
