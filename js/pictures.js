@@ -134,7 +134,6 @@
       };
     }
   }
-  
   initFilters();
   loadPictures();
 })();
