@@ -51,6 +51,7 @@
   }
 
   function loadPictures() {
+    filters.classList.add('hidden');
     var xhr = new XMLHttpRequest();
     xhr.timeout = REQUEST_FAILURE_TIMEOUT;
     xhr.open('Get', 'data/pictures.json');
@@ -59,14 +60,14 @@
     xhr.onreadystatechange = function() {
       switch (xhr.readyState) {
         case ReadyState.DONE:
+          picturesContainer.classList.remove('pictures-loading');
           if (xhr.status === 200) {
-            picturesContainer.classList.remove('pictures-loading');
             var data = xhr.response;
             pictures = JSON.parse(data);
             renderPictures(pictures);
+            filters.classList.remove('hidden');
           }
           if (xhr.status >= 400) {
-            picturesContainer.classList.remove('pictures-loading');
             showLoadFailure();
           }
           break;
@@ -79,6 +80,7 @@
       }
     };
     xhr.ontimeout = function() {
+      picturesContainer.classList.remove('pictures-loading');
       showLoadFailure();
     };
 
@@ -126,8 +128,8 @@
     var inputFilters = filters.querySelectorAll('.filters-radio');
     for (var i = 0; i < inputFilters.length; i++) {
       inputFilters[i].onchange = function(evt) {
-        var newpictures = filterPictures(evt.target.value);
-        renderPictures(newpictures);
+        var newPictures = filterPictures(evt.target.value);
+        renderPictures(newPictures);
       };
     }
   }
