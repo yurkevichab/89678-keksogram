@@ -7,49 +7,11 @@
     'LOADING': 3,
     'DONE': 4
   };
+
   var REQUEST_FAILURE_TIMEOUT = 10000;
   var pictures;
   var picturesContainer = document.querySelector('.pictures');
   var filters = document.querySelector('.filters');
-
-  function loadPictures() {
-    var xhr = new XMLHttpRequest();
-    xhr.timeout = REQUEST_FAILURE_TIMEOUT;
-    xhr.open('Get', 'data/pictures.json');
-    xhr.send();
-
-    xhr.onreadystatechange = function() {
-      switch (xhr.readyState) {
-        case ReadyState.DONE:
-          if (xhr.status == 200) {
-            if (picturesContainer.classList.contains('pictures-loading')) {
-              picturesContainer.classList.remove('pictures-loading');
-            }
-            var data = xhr.response;
-            pictures = JSON.parse(data);
-            renderPictures(pictures);
-          }
-          if (xhr.status >= 400) {
-            showLoadFailure();
-          }
-        case ReadyState.OPENED:
-        case ReadyState.HEADERS_RECEIVED:
-        case ReadyState.LOADING:
-        default:
-          picturesContainer.classList.add('pictures-loading');
-          break;
-      }
-    };
-    xhr.ontimeout = function () {
-      showLoadFailure();
-    };
-
-  }
-
-  function showLoadFailure() {
-    picturesContainer.classList.add('pictures-failure');
-  }
-
   function renderPictures(date) {
     picturesContainer.innerHTML = "";
     filters.classList.add('hidden');
@@ -85,6 +47,45 @@
     filters.classList.remove('hidden');
   }
 
+  function loadPictures() {
+    var xhr = new XMLHttpRequest();
+    xhr.timeout = REQUEST_FAILURE_TIMEOUT;
+    xhr.open('Get', 'data/pictures.json');
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+      switch (xhr.readyState) {
+        case ReadyState.DONE:
+          if (xhr.status === 200) {
+            if (picturesContainer.classList.contains('pictures-loading')) {
+              picturesContainer.classList.remove('pictures-loading');
+            }
+            var data = xhr.response;
+            pictures = JSON.parse(data);
+            renderPictures(pictures);
+          }
+          if (xhr.status >= 400) {
+            showLoadFailure();
+          }
+          break;
+        case ReadyState.OPENED:
+        case ReadyState.HEADERS_RECEIVED:
+        case ReadyState.LOADING:
+        default:
+          picturesContainer.classList.add('pictures-loading');
+          break;
+      }
+    };
+    xhr.ontimeout = function () {
+      showLoadFailure();
+    };
+
+  }
+
+  function showLoadFailure() {
+    picturesContainer.classList.add('pictures-failure');
+  }
+
   function initFilters() {
     var inputFilters = filters.querySelectorAll('.filters-radio');
     for (var i = 0; i < inputFilters.length; i++) {
@@ -103,7 +104,7 @@
           if (a.data > b.data) {
             return -1;
           }
-          if (a.data == b.data) {
+          if (a.data === b.data) {
             return 0;
           }
           if (a.data < b.data) {
@@ -116,7 +117,7 @@
           if (a.comments > b.comments) {
             return -1;
           }
-          if (a.comments == b.comments) {
+          if (a.comments === b.comments) {
             return 0;
           }
           if (a.comments < b.comments) {

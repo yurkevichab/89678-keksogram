@@ -1,4 +1,5 @@
-﻿(function () {
+﻿'use strict';
+(function() {
   var resizeForm = document.forms['upload-resize'];
   var filterForm = document.forms['upload-filter'];
 
@@ -23,7 +24,7 @@
 
   function filterToCookie() {
     for (var i = 0; i < inputsFilter.length; i++) {
-      inputsFilter[i].onclick = function () {
+      inputsFilter[i].onclick = function() {
         docCookies.setItem('filter', this.value, dateForCookie());
       };
     }
@@ -44,7 +45,7 @@
   resizeY.onchange = validate;
   resizeSize.onchange = validate;
 
-  resizeImage.onload = function () {
+  resizeImage.onload = function() {
     maxWidth = this.width;
     maxHeight = this.height;
   };
