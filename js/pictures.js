@@ -12,26 +12,27 @@
   var pictures;
   var picturesContainer = document.querySelector('.pictures');
   var filters = document.querySelector('.filters');
+
   function renderPictures(date) {
-    picturesContainer.innerHTML = "";
+    picturesContainer.innerHTML = '';
     filters.classList.add('hidden');
     var picturesTemplate = document.getElementById('picture-template');
     var pictureFragment = document.createDocumentFragment();
-    date.forEach(function (date, i) {
+    date.forEach(function(dt) {
       var newPictureElement = picturesTemplate.content.children[0].cloneNode(true);
       var newPictureImg = new Image();
-      newPictureImg.src = date['url'];
+      newPictureImg.src = dt['url'];
 
-      newPictureElement.querySelector('.picture-likes').textContent = date['likes'];
-      newPictureElement.querySelector('.picture-comments').textContent = date['comments'];
+      newPictureElement.querySelector('.picture-likes').textContent = dt['likes'];
+      newPictureElement.querySelector('.picture-comments').textContent = dt['comments'];
 
       pictureFragment.appendChild(newPictureElement);
 
-      var imageLoadTimeout = setTimeout(function () {
+      var imageLoadTimeout = setTimeout(function() {
         newPictureElement.classList.add('picture-load-failure');
       }, REQUEST_FAILURE_TIMEOUT);
 
-      newPictureImg.onload = function () {
+      newPictureImg.onload = function() {
         var oldImg = newPictureElement.querySelector('.picture img');
         newPictureImg.style.width = '182px';
         newPictureImg.style.height = '182px';
@@ -39,7 +40,7 @@
         clearTimeout(imageLoadTimeout);
       };
 
-      newPictureImg.onerror = function () {
+      newPictureImg.onerror = function() {
         newPictureElement.classList.add('picture-load-failure');
       };
     });
@@ -76,7 +77,7 @@
           break;
       }
     };
-    xhr.ontimeout = function () {
+    xhr.ontimeout = function() {
       showLoadFailure();
     };
 
@@ -89,7 +90,7 @@
   function initFilters() {
     var inputFilters = filters.querySelectorAll('.filters-radio');
     for (var i = 0; i < inputFilters.length; i++) {
-      inputFilters[i].onchange = function (evt) {
+      inputFilters[i].onchange = function(evt) {
         var newpictures = filterPictures(evt.target.value);
         renderPictures(newpictures);
       };
@@ -100,7 +101,7 @@
     var newFilerPictures = pictures.slice(0);
     switch (filerValue) {
       case 'new':
-        newFilerPictures = newFilerPictures.sort(function (a, b) {
+        newFilerPictures = newFilerPictures.sort(function(a, b) {
           if (a.data > b.data) {
             return -1;
           }
@@ -113,7 +114,7 @@
         });
         break;
       case 'discussed':
-        newFilerPictures = newFilerPictures.sort(function (a, b) {
+        newFilerPictures = newFilerPictures.sort(function(a, b) {
           if (a.comments > b.comments) {
             return -1;
           }
