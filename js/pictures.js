@@ -1,5 +1,5 @@
-(function (){
-    var ReadyState = {
+(function() {
+  var ReadyState = {
         'UNSENT': 0,
         'OPENED': 1,
         'HEADERS_RECEIVED': 2,
