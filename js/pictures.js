@@ -48,6 +48,10 @@
     filters.classList.remove('hidden');
   }
 
+  function showLoadFailure() {
+    picturesContainer.classList.add('pictures-failure');
+  }
+
   function loadPictures() {
     var xhr = new XMLHttpRequest();
     xhr.timeout = REQUEST_FAILURE_TIMEOUT;
@@ -81,20 +85,6 @@
       showLoadFailure();
     };
 
-  }
-
-  function showLoadFailure() {
-    picturesContainer.classList.add('pictures-failure');
-  }
-
-  function initFilters() {
-    var inputFilters = filters.querySelectorAll('.filters-radio');
-    for (var i = 0; i < inputFilters.length; i++) {
-      inputFilters[i].onchange = function(evt) {
-        var newpictures = filterPictures(evt.target.value);
-        renderPictures(newpictures);
-      };
-    }
   }
 
   function filterPictures(filerValue) {
@@ -135,6 +125,16 @@
     return newFilerPictures;
   }
 
+  function initFilters() {
+    var inputFilters = filters.querySelectorAll('.filters-radio');
+    for (var i = 0; i < inputFilters.length; i++) {
+      inputFilters[i].onchange = function(evt) {
+        var newpictures = filterPictures(evt.target.value);
+        renderPictures(newpictures);
+      };
+    }
+  }
+  
   initFilters();
   loadPictures();
 })();
