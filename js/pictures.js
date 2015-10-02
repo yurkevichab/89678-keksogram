@@ -177,7 +177,7 @@
 
   function initScroll(){
     var someTimeOut;
-    //В вебинаре делают на window, но почему не на document?
+    // window or document?
     document.addEventListener('scroll', function(){
       clearTimeout(someTimeOut) ;
       someTimeOut = setTimeout(checkNextPage, 100);
