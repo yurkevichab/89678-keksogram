@@ -155,7 +155,8 @@
   }
 
   function isNextPageAvailible() {
-    if (!!pictures) {
+    var tryPicture = !!pictures;
+    if (tryPicture) {
       return currentPage < Math.ceil(pictures.length / PAGE_SIZE);
     } else {
       return false;

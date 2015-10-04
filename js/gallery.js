@@ -36,7 +36,7 @@
 
   function hideGallery() {
     galleryElement.classList.add('invisible');
-    closeButton.removeEventListener('click', this);
+    closeButton.removeEventListener('click', hideGallery);
     closeButton.removeEventListener('keydown', keyHandler);
   }
 
@@ -47,7 +47,7 @@
   }
 
 
-  picturesContainer.addEventListener('click',function(evt) {
+  picturesContainer.addEventListener('click', function(evt) {
     evt.preventDefault();
     if (havePicture(evt.target)) {
       showGallery();
