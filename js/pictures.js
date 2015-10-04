@@ -155,10 +155,9 @@
   }
 
   function isNextPageAvailible() {
-    if (!!pictures.length) {
+    if (!!pictures) {
       return currentPage < Math.ceil(pictures.length / PAGE_SIZE);
-    }
-    else {
+    } else {
       return false;
     }
   }
@@ -190,8 +189,8 @@
   initFilters();
   initScroll();
 
-  loadPictures(function(data){
+  loadPictures(function(data) {
     pictures = data;
     setActiveFilter(localStorage.getItem('picturesFilter'));
-  })
+  });
 })();

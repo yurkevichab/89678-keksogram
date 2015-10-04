@@ -1,9 +1,9 @@
 'use strict';
 (function() {
   var keys = {
-    'LEFT' : 37,
-    'RIGHT' : 39,
-    'ESC' : 27
+    'LEFT': 37,
+    'RIGHT': 39,
+    'ESC': 27
   };
   var picturesContainer = document.querySelector('.pictures');
   var galleryElement = document.querySelector('.gallery-overlay');
@@ -19,8 +19,8 @@
     return false;
   }
 
-  function keyHandler(evt){
-    switch (evt.keyCode){
+  function keyHandler(evt) {
+    switch (evt.keyCode) {
       case keys.LEFT:
         console.log('Влево');
         break;
@@ -34,15 +34,15 @@
     }
   }
 
-  function hideGallery(){
+  function hideGallery() {
     galleryElement.classList.add('invisible');
-    closeButton.removeEventListener('click',this);
-    closeButton.removeEventListener('keydown',keyHandler);
+    closeButton.removeEventListener('click', this);
+    closeButton.removeEventListener('keydown', keyHandler);
   }
 
-  function showGallery(){
+  function showGallery() {
     galleryElement.classList.remove('invisible');
-    closeButton.addEventListener('click',hideGallery);
+    closeButton.addEventListener('click', hideGallery);
     document.addEventListener('keydown', keyHandler);
   }
 
