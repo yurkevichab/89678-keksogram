@@ -19,11 +19,9 @@
 
   function renderPictures(data, numberPage, replace) {
     numberPage = numberPage || 0;
-    replace = typeof replace !== 'undefined' ? replace : true;
-
+    replace = !!replace;
     if (replace) {
       picturesContainer.innerHTML = '';
-      picturesContainer.classList.remove('pictures-loading');
     }
 
     var picturesTemplate = document.querySelector('.picture-template');
@@ -66,7 +64,7 @@
     picturesContainer.classList.add('pictures-failure');
   }
 
-  function loadPictures() {
+  function loadPictures(callback) {
     filters.classList.add('hidden');
     var xhr = new XMLHttpRequest();
     xhr.timeout = REQUEST_FAILURE_TIMEOUT;
@@ -79,8 +77,7 @@
           picturesContainer.classList.remove('pictures-loading');
           if (xhr.status === 200) {
             var data = xhr.response;
-            pictures = JSON.parse(data);
-            setActiveFilter(localStorage.getItem('picturesFilter'));
+            callback(JSON.parse(data));
             filters.classList.remove('hidden');
           }
           if (xhr.status >= 400) {
@@ -134,7 +131,6 @@
       case 'popular':
       default :
         newFilerPictures = arrPictures.slice(0);
-        console.log(newFilerPictures);
         break;
     }
     localStorage.setItem('picturesFilter', filerValue);
@@ -151,7 +147,6 @@
     if (localStorage.getItem('picturesFilter')) {
       filters['filter'].value = localStorage.getItem('picturesFilter');
     }
-    loadPictures();
     filters.addEventListener('click', function(evt) {
       if (evt.target.tagName === 'INPUT') {
         setActiveFilter(evt.target.value);
@@ -160,8 +155,12 @@
   }
 
   function isNextPageAvailible() {
-
-    return currentPage < Math.ceil(pictures.length / PAGE_SIZE);
+    if (!!pictures.length) {
+      return currentPage < Math.ceil(pictures.length / PAGE_SIZE);
+    }
+    else {
+      return false;
+    }
   }
 
   function isBottom() {
@@ -171,23 +170,28 @@
 
   function checkNextPage() {
     if (isNextPageAvailible() && isBottom()) {
-      document.dispatchEvent(new CustomEvent('loadrender'));
+      window.dispatchEvent(new CustomEvent('loadrender'));
+
     }
   }
 
   function initScroll() {
     var someTimeOut;
-    // window or document?
-    document.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function() {
       clearTimeout(someTimeOut);
       someTimeOut = setTimeout(checkNextPage, 100);
     });
-    document.addEventListener('loadrender', function() {
+    window.addEventListener('loadrender', function() {
       currentPage++;
-      renderPictures(currentPictures, currentPage, false);
+      renderPictures(currentPictures, currentPage);
     });
   }
 
   initFilters();
   initScroll();
+
+  loadPictures(function(data){
+    pictures = data;
+    setActiveFilter(localStorage.getItem('picturesFilter'));
+  })
 })();
