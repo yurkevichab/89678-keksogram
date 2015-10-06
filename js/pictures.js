@@ -18,13 +18,12 @@
   var filters = document.querySelector('.filters');
   var filterStorage = 'popular';
 
-  function renderPictures(data, numberPage, replace) {
+  function renderPictures(data, numberPage) {
     numberPage = numberPage || 0;
-    replace = !!replace;
-    if (replace) {
+    if (numberPage === 0) {
       picturesContainer.innerHTML = '';
     }
-
+    
     var picturesTemplate = document.querySelector('.picture-template');
     var pictureFragment = document.createDocumentFragment();
 
@@ -141,7 +140,7 @@
   function setActiveFilter(filterID) {
     currentPictures = filterPictures(pictures, filterID);
     currentPage = 0;
-    renderPictures(currentPictures, currentPage, true);
+    renderPictures(currentPictures, currentPage);
   }
 
   function initFilters() {
@@ -184,8 +183,9 @@
 
   loadPictures(function(data) {
     pictures = data;
-    if (!!localStorage.getItem('picturesFilter')) {
-      filterStorage = localStorage.getItem('picturesFilter');
+    var activeFilter = localStorage.getItem('picturesFilter');
+    if (activeFilter) {
+      filterStorage = activeFilter;
       filters['filter'].value = filterStorage;
     }
     setActiveFilter(filterStorage);
