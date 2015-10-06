@@ -22,10 +22,10 @@
   function keyHandler(evt) {
     switch (evt.keyCode) {
       case keys.LEFT:
-        console.log('Влево');
+        console.log('Р’Р»РµРІРѕ');
         break;
       case keys.RIGHT:
-        console.log('Вправо');
+        console.log('Р’РїСЂР°РІРѕ');
         break;
       case keys.ESC:
         hideGallery();

@@ -16,6 +16,7 @@
   var currentPage = 0;
   var picturesContainer = document.querySelector('.pictures');
   var filters = document.querySelector('.filters');
+  var filterStorage = 'popular';
 
   function renderPictures(data, numberPage, replace) {
     numberPage = numberPage || 0;
@@ -129,7 +130,7 @@
         });
         break;
       case 'popular':
-      default :
+      default:
         newFilerPictures = arrPictures.slice(0);
         break;
     }
@@ -144,9 +145,6 @@
   }
 
   function initFilters() {
-    if (localStorage.getItem('picturesFilter')) {
-      filters['filter'].value = localStorage.getItem('picturesFilter');
-    }
     filters.addEventListener('click', function(evt) {
       if (evt.target.tagName === 'INPUT') {
         setActiveFilter(evt.target.value);
@@ -155,12 +153,7 @@
   }
 
   function isNextPageAvailible() {
-    var tryPicture = !!pictures;
-    if (tryPicture) {
-      return currentPage < Math.ceil(pictures.length / PAGE_SIZE);
-    } else {
-      return false;
-    }
+      return !!pictures && currentPage < Math.ceil(pictures.length / PAGE_SIZE);
   }
 
   function isBottom() {
@@ -171,7 +164,6 @@
   function checkNextPage() {
     if (isNextPageAvailible() && isBottom()) {
       window.dispatchEvent(new CustomEvent('loadrender'));
-
     }
   }
 
@@ -192,6 +184,10 @@
 
   loadPictures(function(data) {
     pictures = data;
-    setActiveFilter(localStorage.getItem('picturesFilter'));
+    if (!!localStorage.getItem('picturesFilter')) {
+      filterStorage = localStorage.getItem('picturesFilter');
+      filters['filter'].value = filterStorage;
+    }
+    setActiveFilter(filterStorage);
   });
 })();
