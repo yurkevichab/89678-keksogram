@@ -18,11 +18,6 @@
   var filters = document.querySelector('.filters');
   var filterStorage = 'popular';
 
-  function setImageError(imgError) {
-    imgError.classList.add('picture-load-failure');
-    imgError.style.cursor = 'default';
-  }
-
   function renderPictures(data, numberPage) {
     numberPage = numberPage || 0;
     if (numberPage === 0) {
@@ -46,7 +41,7 @@
       pictureFragment.appendChild(newPictureElement);
 
       var imageLoadTimeout = setTimeout(function() {
-        setImageError(newPictureElement);
+        newPictureElement.classList.add('picture-load-failure');
       }, REQUEST_FAILURE_TIMEOUT);
 
       newPictureImg.onload = function() {
@@ -58,7 +53,7 @@
       };
 
       newPictureImg.onerror = function() {
-        setImageError(newPictureElement);
+        newPictureElement.classList.add('picture-load-failure');
       };
     });
     picturesContainer.appendChild(pictureFragment);
