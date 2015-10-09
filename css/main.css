@@ -297,6 +297,7 @@ input[type=radio]:checked + .upload-filter-label {
   border: solid 1px rgba(255, 255, 255, 0.2);
   opacity: 0.3;
   line-height: 182px;
+  cursor: default;
 }
 
 .picture-load-failure img {

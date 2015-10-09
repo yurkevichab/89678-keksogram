@@ -9,14 +9,27 @@
   };
 
   var REQUEST_FAILURE_TIMEOUT = 10000;
+  var PAGE_SIZE = 12;
+
   var pictures;
+  var currentPictures;
+  var currentPage = 0;
   var picturesContainer = document.querySelector('.pictures');
   var filters = document.querySelector('.filters');
+  var filterStorage = 'popular';
 
-  function renderPictures(data) {
-    picturesContainer.innerHTML = '';
-    var picturesTemplate = document.getElementById('picture-template');
+  function renderPictures(data, numberPage) {
+    numberPage = numberPage || 0;
+    if (numberPage === 0) {
+      picturesContainer.innerHTML = '';
+    }
+    var picturesTemplate = document.querySelector('.picture-template');
     var pictureFragment = document.createDocumentFragment();
+
+    var picturesFrom = numberPage * PAGE_SIZE;
+    var picturesTo = picturesFrom + PAGE_SIZE;
+    data = data.slice(picturesFrom, picturesTo);
+
     data.forEach(function(arr) {
       var newPictureElement = picturesTemplate.content.children[0].cloneNode(true);
       var newPictureImg = new Image();
@@ -50,7 +63,7 @@
     picturesContainer.classList.add('pictures-failure');
   }
 
-  function loadPictures() {
+  function loadPictures(callback) {
     filters.classList.add('hidden');
     var xhr = new XMLHttpRequest();
     xhr.timeout = REQUEST_FAILURE_TIMEOUT;
@@ -63,8 +76,7 @@
           picturesContainer.classList.remove('pictures-loading');
           if (xhr.status === 200) {
             var data = xhr.response;
-            pictures = JSON.parse(data);
-            renderPictures(pictures);
+            callback(JSON.parse(data));
             filters.classList.remove('hidden');
           }
           if (xhr.status >= 400) {
@@ -86,8 +98,8 @@
 
   }
 
-  function filterPictures(filerValue) {
-    var newFilerPictures = pictures.slice(0);
+  function filterPictures(arrPictures, filerValue) {
+    var newFilerPictures = arrPictures.slice(0);
     switch (filerValue) {
       case 'new':
         newFilerPictures = newFilerPictures.sort(function(a, b) {
@@ -116,22 +128,65 @@
         });
         break;
       case 'popular':
-      default :
-        newFilerPictures = pictures.slice(0);
+      default:
+        newFilerPictures = arrPictures.slice(0);
         break;
     }
+    localStorage.setItem('picturesFilter', filerValue);
     return newFilerPictures;
   }
 
+  function setActiveFilter(filterID) {
+    currentPictures = filterPictures(pictures, filterID);
+    currentPage = 0;
+    renderPictures(currentPictures, currentPage);
+  }
+
   function initFilters() {
-    loadPictures();
-    var inputFilters = filters.querySelectorAll('.filters-radio');
-    for (var i = 0; i < inputFilters.length; i++) {
-      inputFilters[i].onchange = function(evt) {
-        var newPictures = filterPictures(evt.target.value);
-        renderPictures(newPictures);
-      };
+    filters.addEventListener('click', function(evt) {
+      if (evt.target.tagName === 'INPUT') {
+        setActiveFilter(evt.target.value);
+      }
+    });
+  }
+
+  function isNextPageAvailible() {
+    return !!pictures && currentPage < Math.ceil(pictures.length / PAGE_SIZE);
+  }
+
+  function isBottom() {
+    var GAP = 100;
+    return picturesContainer.getBoundingClientRect().bottom - GAP <= window.innerHeight;
+  }
+
+  function checkNextPage() {
+    if (isNextPageAvailible() && isBottom()) {
+      window.dispatchEvent(new CustomEvent('loadrender'));
     }
   }
+
+  function initScroll() {
+    var someTimeOut;
+    window.addEventListener('scroll', function() {
+      clearTimeout(someTimeOut);
+      someTimeOut = setTimeout(checkNextPage, 100);
+    });
+    window.addEventListener('loadrender', function() {
+      currentPage++;
+      renderPictures(currentPictures, currentPage);
+    });
+  }
+
   initFilters();
+  initScroll();
+
+  loadPictures(function(data) {
+    pictures = data;
+    var activeFilter = localStorage.getItem('picturesFilter');
+    if (activeFilter) {
+      filterStorage = activeFilter;
+      filters['filter'].value = filterStorage;
+    }
+    setActiveFilter(filterStorage);
+  });
 })();
