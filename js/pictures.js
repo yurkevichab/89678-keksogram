@@ -1,4 +1,4 @@
-/* global Picture: true */
+/* global Photo: true */
 'use strict';
 (function() {
   var ReadyState = {
@@ -13,20 +13,19 @@
   var PAGE_SIZE = 12;
 
   var pictures;
-  var renderedPicture = [];
+  var renderedPictures = [];
   var currentPictures;
   var currentPage = 0;
   var picturesContainer = document.querySelector('.pictures');
   var filters = document.querySelector('.filters');
-  var filterStorage = 'popular';
 
   function renderPictures(data, numberPage) {
     numberPage = numberPage || 0;
     if (numberPage === 0) {
-      renderedPicture.forEach(function(picture) {
+      renderedPictures.forEach(function(picture) {
         picture.unrender();
       });
-      renderedPicture = [];
+      renderedPictures = [];
     }
     var pictureFragment = document.createDocumentFragment();
 
@@ -35,10 +34,9 @@
     data = data.slice(picturesFrom, picturesTo);
 
     data.forEach(function(arr) {
-      var newPicture = new Picture(arr);
+      var newPicture = new Photo(arr);
       newPicture.render(pictureFragment);
-      renderedPicture.push(newPicture);
-
+      renderedPictures.push(newPicture);
     });
     picturesContainer.appendChild(pictureFragment);
   }
@@ -166,11 +164,8 @@
 
   loadPictures(function(data) {
     pictures = data;
-    var activeFilter = localStorage.getItem('picturesFilter');
-    if (activeFilter) {
-      filterStorage = activeFilter;
-      filters['filter'].value = filterStorage;
-    }
-    setActiveFilter(filterStorage);
+    var activeFilter = localStorage.getItem('picturesFilter') || 'popular';
+    filters['filter'].value = activeFilter;
+    setActiveFilter(activeFilter);
   });
 })();

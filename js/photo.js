@@ -3,11 +3,11 @@
   var REQUEST_FAILURE_TIMEOUT = 10000;
   var picturesTemplate = document.querySelector('.picture-template');
 
-  var Picture = function(data) {
+  var Photo = function(data) {
     this._data = data;
   };
 
-  Picture.prototype.render = function(container) {
+  Photo.prototype.render = function(container) {
     var newPictureElement = picturesTemplate.content.children[0].cloneNode(true);
     var newPictureImg = new Image();
     newPictureImg.src = this._data['url'];
@@ -33,25 +33,24 @@
       newPictureElement.classList.add('picture-load-failure');
     };
     this._element = newPictureElement;
-    this._element.addEventListener('click', this._onClick());
+    this._element.addEventListener('click', this._onClick);
   };
 
-  Picture.prototype.unrender = function() {
+  Photo.prototype.unrender = function() {
     this._element.parentNode.removeChild(this._element);
     this._element.removeEventListener('click', this._onClick);
     this._element = null;
   };
 
-  Picture.prototype._onClick = function() {
+  Photo.prototype._onClick = function() {
     if (!this._element.classList.contains('picture-load-failure')) {
       var galleryEventClick = new CustomEvent('galleryclick');
-      window.dispatchEven(galleryEventClick);
+      window.dispatchEvent(galleryEventClick);
     }
   };
-  Picture.prototype.getPictures = function() {
+  Photo.prototype.getPhoto = function() {
     return this._element.url;
   };
 
-  window.Picture = Picture;
-
+  window.Photo = Photo;
 })();
