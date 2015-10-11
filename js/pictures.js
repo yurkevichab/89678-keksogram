@@ -1,4 +1,4 @@
-/* global Photo: true */
+/* global Photo: true Gallery: true */
 'use strict';
 (function() {
   var ReadyState = {
@@ -13,6 +13,7 @@
   var PAGE_SIZE = 12;
 
   var pictures;
+  var gallery = new Gallery();
   var renderedPictures = [];
   var currentPictures;
   var currentPage = 0;
@@ -77,7 +78,6 @@
       picturesContainer.classList.remove('pictures-loading');
       showLoadFailure();
     };
-
   }
 
   function filterPictures(arrPictures, filerValue) {
@@ -156,6 +156,11 @@
     window.addEventListener('loadrender', function() {
       currentPage++;
       renderPictures(currentPictures, currentPage);
+    });
+  }
+
+  function initGallery() {
+    window.addEventListener('galleryclick', function(evt) {
     });
   }
 

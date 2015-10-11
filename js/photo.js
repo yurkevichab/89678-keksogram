@@ -5,6 +5,7 @@
 
   var Photo = function(data) {
     this._data = data;
+    this._onClick = this._onClick.bind(this);
   };
 
   Photo.prototype.render = function(container) {
@@ -48,6 +49,7 @@
       window.dispatchEvent(galleryEventClick);
     }
   };
+
   Photo.prototype.getPhoto = function() {
     return this._element.url;
   };
