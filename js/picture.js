@@ -5,7 +5,7 @@
 
   var Picture = function(data) {
     this._data = data;
-  }
+  };
 
   Picture.prototype.render = function(container) {
     var newPictureElement = picturesTemplate.content.children[0].cloneNode(true);
@@ -34,13 +34,13 @@
     };
     this._element = newPictureElement;
     this._element.addEventListener('click', this._onClick());
-  }
+  };
 
   Picture.prototype.unrender = function() {
     this._element.parentNode.removeChild(this._element);
     this._element.removeEventListener('click', this._onClick);
     this._element = null;
-  }
+  };
 
   Picture.prototype._onClick = function() {
     if (!this._element.classList.contains('picture-load-failure')) {
@@ -50,7 +50,7 @@
   };
   Picture.prototype.getPictures = function() {
     return this._element.url;
-  }
+  };
 
   window.Picture = Picture;
 
