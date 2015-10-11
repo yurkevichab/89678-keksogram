@@ -1,3 +1,4 @@
+/* global Picture: true */
 'use strict';
 (function() {
   var ReadyState = {
@@ -12,6 +13,7 @@
   var PAGE_SIZE = 12;
 
   var pictures;
+  var renderedPicture = [];
   var currentPictures;
   var currentPage = 0;
   var picturesContainer = document.querySelector('.pictures');
@@ -21,9 +23,11 @@
   function renderPictures(data, numberPage) {
     numberPage = numberPage || 0;
     if (numberPage === 0) {
-      picturesContainer.innerHTML = '';
+      renderedPicture.forEach(function(picture) {
+        picture.unrender();
+      });
+      renderedPicture = [];
     }
-    var picturesTemplate = document.querySelector('.picture-template');
     var pictureFragment = document.createDocumentFragment();
 
     var picturesFrom = numberPage * PAGE_SIZE;
@@ -31,30 +35,10 @@
     data = data.slice(picturesFrom, picturesTo);
 
     data.forEach(function(arr) {
-      var newPictureElement = picturesTemplate.content.children[0].cloneNode(true);
-      var newPictureImg = new Image();
-      newPictureImg.src = arr['url'];
+      var newPicture = new Picture(arr);
+      newPicture.render(pictureFragment);
+      renderedPicture.push(newPicture);
 
-      newPictureElement.querySelector('.picture-likes').textContent = arr['likes'];
-      newPictureElement.querySelector('.picture-comments').textContent = arr['comments'];
-
-      pictureFragment.appendChild(newPictureElement);
-
-      var imageLoadTimeout = setTimeout(function() {
-        newPictureElement.classList.add('picture-load-failure');
-      }, REQUEST_FAILURE_TIMEOUT);
-
-      newPictureImg.onload = function() {
-        var oldImg = newPictureElement.querySelector('.picture img');
-        newPictureImg.style.width = '182px';
-        newPictureImg.style.height = '182px';
-        newPictureElement.replaceChild(newPictureImg, oldImg);
-        clearTimeout(imageLoadTimeout);
-      };
-
-      newPictureImg.onerror = function() {
-        newPictureElement.classList.add('picture-load-failure');
-      };
     });
     picturesContainer.appendChild(pictureFragment);
   }
