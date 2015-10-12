@@ -24,7 +24,7 @@
     this._onCloseClick = this._onCloseClick.bind(this);
     this._onDocumentKeyDown = this._onDocumentKeyDown.bind(this);
     this._onPhotoClick = this._onPhotoClick.bind(this);
-  }
+  };
 
   Gallery.prototype._onDocumentKeyDown = function(evt) {
     this.currentKey = evt.keyCode;
@@ -89,14 +89,14 @@
 
     //Вот тут я проверяю: Если картинка ошибочная, загрузика мне следующую картинку в зависимости от нажатой кнопки
     imgElement.onerror = function() {
-      if (this.currentKey == keys.LEFT) {
+      if (this.currentKey === keys.LEFT) {
         this.setCurrentPhoto(this._currentPhoto - 1);
       }
-      if (this.currentKey == keys.RIGHT) {
+      if (this.currentKey === keys.RIGHT) {
         this.setCurrentPhoto(this._currentPhoto + 1);
       }
     }.bind(this);
-  }
+  };
 
   window.Gallery = Gallery;
 })();

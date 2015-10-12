@@ -151,7 +151,7 @@
     var arr = [];
     currentPictures.forEach(function(item) {
       arr.push(item.url);
-    })
+    });
     return arr;
   }
 
