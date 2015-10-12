@@ -147,6 +147,14 @@
     }
   }
 
+  function getPhotos() {
+    var arr = [];
+    currentPictures.forEach(function(item) {
+      arr.push(item.url);
+    })
+    return arr;
+  }
+
   function initScroll() {
     var someTimeOut;
     window.addEventListener('scroll', function() {
@@ -161,10 +169,14 @@
 
   function initGallery() {
     window.addEventListener('galleryclick', function(evt) {
+      evt.preventDefault();
+      gallery.setPhotos(evt.detail.pictureElement.getCurrentPhoto(), getPhotos());
+      gallery.show();
     });
   }
 
   initFilters();
+  initGallery();
   initScroll();
 
   loadPictures(function(data) {

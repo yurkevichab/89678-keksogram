@@ -6,6 +6,7 @@
   var Photo = function(data) {
     this._data = data;
     this._onClick = this._onClick.bind(this);
+    this._element = null;
   };
 
   Photo.prototype.render = function(container) {
@@ -43,15 +44,16 @@
     this._element = null;
   };
 
-  Photo.prototype._onClick = function() {
+  Photo.prototype._onClick = function(evt) {
+    evt.preventDefault();
     if (!this._element.classList.contains('picture-load-failure')) {
-      var galleryEventClick = new CustomEvent('galleryclick');
+      var galleryEventClick = new CustomEvent('galleryclick', {detail: {pictureElement: this}});
       window.dispatchEvent(galleryEventClick);
     }
   };
 
-  Photo.prototype.getPhoto = function() {
-    return this._element.url;
+  Photo.prototype.getCurrentPhoto = function() {
+    return this._data.url;
   };
 
   window.Photo = Photo;
