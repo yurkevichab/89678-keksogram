@@ -148,11 +148,9 @@
   }
 
   function getPhotos() {
-    var arr = [];
-    currentPictures.forEach(function(item) {
-      arr.push(item.url);
+    return currentPictures.map(function(obj) {
+      return obj.url;
     });
-    return arr;
   }
 
   function initScroll() {
@@ -170,7 +168,8 @@
   function initGallery() {
     window.addEventListener('galleryclick', function(evt) {
       evt.preventDefault();
-      gallery.setPhotos(evt.detail.pictureElement.getCurrentPhoto(), getPhotos());
+      gallery.setPhotos(getPhotos());
+      gallery.setCurrentPhotoByUrl(evt.detail.pictureElement.getCurrentPhoto());
       gallery.show();
     });
   }
