@@ -5,6 +5,7 @@
     'RIGHT': 39,
     'ESC': 27
   };
+  var REQUEST_FAILURE_TIMEOUT = 10000;
 
   function arrayBounds(arr, index) {
     if (index < 0 || index === arr.length) {
@@ -85,6 +86,7 @@
     this._pictureElement.innerHTML = '';
     var imgElement = new Image();
     imgElement.src = this._photos[this._currentPhoto];
+    imgElement.timeout = REQUEST_FAILURE_TIMEOUT;
     imgElement.onload = function() {
       this._pictureElement.appendChild(imgElement);
     }.bind(this);
