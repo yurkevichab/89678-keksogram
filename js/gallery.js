@@ -7,7 +7,7 @@
   };
 
   function arrayBounds(arr, index) {
-    if (index === 0 || index === arr.length) {
+    if (index < 0 || index === arr.length) {
       return false;
     }
     return true;
@@ -67,9 +67,11 @@
     this.hide();
   };
 
-  Gallery.prototype.setPhotos = function(photo, photos) {
+  Gallery.prototype.setPhotos = function(photos) {
     this._photos = photos;
-    this._currentPhoto = photos.indexOf(photo);
+  };
+  Gallery.prototype.setCurrentPhotoByUrl = function(url) {
+    this._currentPhoto = this._photos.indexOf(url);
   };
 
   Gallery.prototype.setCurrentPhoto = function(index) {
@@ -87,14 +89,14 @@
       this._pictureElement.appendChild(imgElement);
     }.bind(this);
 
-    //Вот тут я проверяю: Если картинка ошибочная, загрузика мне следующую картинку в зависимости от нажатой кнопки
     imgElement.onerror = function() {
-      if (this.currentKey === keys.LEFT) {
-        this.setCurrentPhoto(this._currentPhoto - 1);
-      }
-      if (this.currentKey === keys.RIGHT) {
-        this.setCurrentPhoto(this._currentPhoto + 1);
-      }
+      this._currentImg.classList.add('picture-big-load-failure');
+      this._pictureElement.appendChild(this._currentImg);
+    }.bind(this);
+
+    imgElement.ontimeout = function() {
+      this._currentImg.classList.add('picture-big-load-failure');
+      this._pictureElement.appendChild(this._currentImg);
     }.bind(this);
   };
 
