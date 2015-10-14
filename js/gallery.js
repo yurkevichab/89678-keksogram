@@ -81,24 +81,24 @@
       this._showCurrentPhoto();
     }
   };
+  Gallery.prototype._galleryPictureLoadFail = function() {
+    this._currentImg.classList.add('picture-big-load-failure');
+    this._pictureElement.appendChild(this._currentImg);
+  };
 
   Gallery.prototype._showCurrentPhoto = function() {
     this._pictureElement.innerHTML = '';
+    var timeOutLoadPicture = setTimeout(this._galleryPictureLoadFail, REQUEST_FAILURE_TIMEOUT);
     var imgElement = new Image();
     imgElement.src = this._photos[this._currentPhoto];
     imgElement.timeout = REQUEST_FAILURE_TIMEOUT;
     imgElement.onload = function() {
       this._pictureElement.appendChild(imgElement);
+      clearTimeout(timeOutLoadPicture);
     }.bind(this);
 
     imgElement.onerror = function() {
-      this._currentImg.classList.add('picture-big-load-failure');
-      this._pictureElement.appendChild(this._currentImg);
-    }.bind(this);
-
-    imgElement.ontimeout = function() {
-      this._currentImg.classList.add('picture-big-load-failure');
-      this._pictureElement.appendChild(this._currentImg);
+      this._galleryPictureLoadFail();
     }.bind(this);
   };
 

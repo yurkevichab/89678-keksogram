@@ -122,6 +122,7 @@
     currentPictures = filterPictures(pictures, filterID);
     currentPage = 0;
     renderPictures(currentPictures, currentPage);
+    gallery.setPhotos(getPhotos());
   }
 
   function initFilters() {
@@ -168,7 +169,6 @@
   function initGallery() {
     window.addEventListener('galleryclick', function(evt) {
       evt.preventDefault();
-      gallery.setPhotos(getPhotos());
       gallery.setCurrentPhotoByUrl(evt.detail.pictureElement.getCurrentPhoto());
       gallery.show();
     });
