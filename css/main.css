@@ -245,6 +245,31 @@ input[type=radio]:checked + .upload-filter-label {
   width: 980px;
 }
 
+.pictures-loading:after,
+.pictures-failure:after {
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  box-sizing: border-box;
+  color: #fff;
+  font-size: 30px;
+  margin-left: -100px;
+  left: 50%;
+  padding: 20px;
+  position: absolute;
+  text-align: center;
+  top: 260px;
+  width: 200px;
+  z-index: 2;
+}
+
+.pictures-loading:after {
+  content: 'Загрузка...';
+}
+
+.pictures-failure:after {
+  content: 'Ошибка загрузки';
+}
+
 .picture {
   box-sizing: border-box;
   display: inline-block;
@@ -272,6 +297,14 @@ input[type=radio]:checked + .upload-filter-label {
   border: solid 1px rgba(255, 255, 255, 0.2);
   opacity: 0.3;
   line-height: 182px;
+  cursor: default;
+}
+
+.picture-big-load-failure {
+  background: url('../img/icon-cross.png') no-repeat center black;
+  opacity: 0.8;
+  line-height: 182px;
+  cursor: default;
 }
 
 .picture-load-failure img {
@@ -344,4 +377,41 @@ input[type=radio]:checked + .upload-filter-label {
   .picture:nth-of-type(10) {
     margin-right: 600px;
   }
+}
+
+.gallery-overlay {
+  background: rgba(0, 0, 0, 0.8);
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  position: fixed;
+  right: 0;
+  text-align: center;
+  top: 0;
+  z-index: 1;
+}
+
+.gallery-overlay-close {
+  color: #fff;
+  cursor: pointer;
+  font-size: 45px;
+  padding: 0 10px;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: -5px;
+}
+
+.gallery-overlay-preview {
+  background: #fff;
+  margin: 30px 0;
+  display: inline-block;
+}
+
+.gallery-overlay-image[src=""] {
+  border: dotted 1px #ddd;
+  display: block;
+  cursor: pointer;
+  height: 640px;
+  width: 640px;
 }
