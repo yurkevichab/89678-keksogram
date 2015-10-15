@@ -168,7 +168,6 @@
 
   function initGallery() {
     window.addEventListener('galleryclick', function(evt) {
-      evt.preventDefault();
       gallery.setCurrentPhotoByUrl(evt.detail.pictureElement.getCurrentPhoto());
       gallery.show();
     });
