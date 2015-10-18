@@ -6,14 +6,6 @@
  */
 'use strict';
 (function() {
-  var ReadyState = {
-    'UNSENT': 0,
-    'OPENED': 1,
-    'HEADERS_RECEIVED': 2,
-    'LOADING': 3,
-    'DONE': 4
-  };
-
   var REQUEST_FAILURE_TIMEOUT = 10000;
   var PAGE_SIZE = 12;
 

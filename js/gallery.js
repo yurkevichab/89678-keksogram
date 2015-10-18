@@ -6,7 +6,6 @@
     'RIGHT': 39,
     'ESC': 27
   };
-  var REQUEST_FAILURE_TIMEOUT = 10000;
 
   function arrayBounds(arr, index) {
     if (index < 0 || index === arr.length) {
