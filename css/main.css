@@ -305,6 +305,10 @@ input[type=radio]:checked + .upload-filter-label {
   opacity: 0.8;
   line-height: 182px;
   cursor: default;
+  border: dotted 1px #ddd;
+  display: block;
+  height: 640px;
+  width: 640px;
 }
 
 .picture-load-failure img {
