@@ -19,6 +19,7 @@
     this._element = document.querySelector('.gallery-overlay');
     this._closeButton = document.querySelector('.gallery-overlay-close');
     this._pictureElement = this._element.querySelector('.gallery-overlay-preview');
+    this.galleryPicture = new Backbone.Model();
     this._currentPhoto = 0;
     this.currentKey = '';
     this._onCloseClick = this._onCloseClick.bind(this);
@@ -47,7 +48,6 @@
     this._element.classList.add('invisible');
     this._closeButton.removeEventListener('click', this._onCloseClick);
     document.removeEventListener('keydown', this._onDocumentKeyDown);
-    // this._photos.reset();
     this._pictureElement.removeEventListener('click', this._onPhotoClick);
   };
 
@@ -71,13 +71,7 @@
   };
 
   Gallery.prototype.setPhotos = function(photos) {
-    this._photos.reset(photos.map(function(photoSrc) {
-      return new Backbone.Model({
-        url: photoSrc.url,
-        likes: photoSrc.likes,
-        comments: photoSrc.comments
-      });
-    }));
+    this._photos = photos;
   };
   Gallery.prototype.setCurrentPhotoByUrl = function(model) {
     this._currentPhoto = model;
@@ -91,13 +85,9 @@
   };
 
   Gallery.prototype._showCurrentPhoto = function() {
-    this._controls = this._element.querySelector('.gallery-overlay-controls');
-    this._pictureElement.innerHTML = '';
-    var newGalleryPhoto = new GalleryPicture({model: this._photos.at(this._currentPhoto)});
-    newGalleryPhoto.render();
-    this._pictureElement.appendChild(newGalleryPhoto.el);
-    this._pictureElement.appendChild(newGalleryPhoto.currentControls(this._controls));
-
+    this.galleryPicture = new GalleryPicture({model: this._photos.at(this._currentPhoto)});
+    this._element.replaceChild(this.galleryPicture.el, this._pictureElement);
+    this._pictureElement = this.galleryPicture.el;
   };
   window.Gallery = Gallery;
 })();

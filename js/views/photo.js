@@ -9,10 +9,16 @@
       this._onClick = this._onClick.bind(this);
       this._onPhotoLoad = this._onPhotoLoad.bind(this);
       this._onPhotoLoadError = this._onPhotoLoadError.bind(this);
+      this.listenTo(this.model, 'change:likes', this.render);
     },
     className: 'picture',
     events: {
-      'click': '_onClick'
+      'click .picture img': '_onClick',
+      'click .picture-likes': '_likeThisModel'
+    },
+    _likeThisModel: function(evt) {
+      evt.preventDefault();
+      this.model._onLike();
     },
 
     render: function() {
@@ -40,6 +46,7 @@
     },
     _onPhotoLoadError: function(evt) {
       this._cleanupImageListeners(evt.target);
+      this.model.set('url', '');
       this.el.classList.add('picture-load-failure');
     },
     _cleanupImageListeners: function(image) {

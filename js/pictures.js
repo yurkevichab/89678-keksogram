@@ -1,5 +1,4 @@
 /* global
-
  Gallery: true
  PhotosCollection: true
  PhotoView: true
@@ -8,12 +7,9 @@
 (function() {
   var REQUEST_FAILURE_TIMEOUT = 10000;
   var PAGE_SIZE = 12;
-
   var photosCollection = new PhotosCollection();
-
-
-  var pictures;
   var gallery = new Gallery();
+  var pictures;
   var renderedPictures = [];
   var currentPictures;
   var currentPage = 0;
@@ -94,7 +90,7 @@
     filterPictures(currentPictures, filterID);
     currentPage = 0;
     renderPictures(currentPage);
-    gallery.setPhotos(currentPictures);
+    gallery.setPhotos(photosCollection);
   }
 
   function initFilters() {
