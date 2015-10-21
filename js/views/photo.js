@@ -36,7 +36,6 @@
     },
     _onPhotoLoad: function(evt) {
       clearTimeout(this._onPhotoLoadTimeOut);
-      console.log(this.el);
       this.el.querySelector('img').src = evt.target.src;
       this._cleanupImageListeners(evt.target);
     },
