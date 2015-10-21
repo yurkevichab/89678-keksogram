@@ -125,7 +125,7 @@
       window.dispatchEvent(new CustomEvent('loadrender'));
     }
   }
-  
+
   function initScroll() {
     var someTimeOut;
     window.addEventListener('scroll', function() {

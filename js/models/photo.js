@@ -6,8 +6,8 @@
       this.toggleLike = this.toggleLike.bind(this);
     },
     toggleLike: function() {
-      var likes = this.get('likes')
-      var liked = this.get('liked')
+      var likes = this.get('likes');
+      var liked = this.get('liked');
       this.set({'liked': !liked, 'likes': liked ? likes - 1 : likes + 1});
     }
   });
