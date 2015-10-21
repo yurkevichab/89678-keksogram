@@ -9,23 +9,22 @@
       this._onClick = this._onClick.bind(this);
       this._onPhotoLoad = this._onPhotoLoad.bind(this);
       this._onPhotoLoadError = this._onPhotoLoadError.bind(this);
-      this.listenTo(this.model, 'change:likes', this.render);
+      this.setElement(picturesTemplate.content.children[0].cloneNode(true));
+      this.listenTo(this.model, 'change', this.render);
     },
     className: 'picture',
     events: {
-      'click .picture img': '_onClick',
+      'click': '_onClick',
       'click .picture-likes': '_likeThisModel'
     },
     _likeThisModel: function(evt) {
       evt.preventDefault();
-      this.model._onLike();
+      this.model.toggleLike();
     },
 
     render: function() {
-      this.el.appendChild(picturesTemplate.content.children[0].cloneNode(true));
       var newPictureImg = new Image();
       newPictureImg.src = this.model.get('url');
-
       this.el.querySelector('.picture-likes').innerHTML = this.model.get('likes');
       this.el.querySelector('.picture-comments').innerHTML = this.model.get('comments');
 
@@ -37,11 +36,8 @@
     },
     _onPhotoLoad: function(evt) {
       clearTimeout(this._onPhotoLoadTimeOut);
-      var oldElement = this.el.querySelector('.picture');
-      var oldImg = this.el.querySelector('.picture img');
-      evt.target.style.width = '182px';
-      evt.target.style.height = '182px';
-      oldElement.replaceChild(evt.target, oldImg);
+      console.log(this.el);
+      this.el.querySelector('img').src = evt.target.src;
       this._cleanupImageListeners(evt.target);
     },
     _onPhotoLoadError: function(evt) {
@@ -55,7 +51,7 @@
     },
     _onClick: function(evt) {
       evt.preventDefault();
-      if (!this.el.classList.contains('picture-load-failure')) {
+      if (!evt.target.classList.contains('picture-load-failure') && !evt.target.classList.contains('picture-likes')) {
         this.trigger('galleryclick');
       }
     }

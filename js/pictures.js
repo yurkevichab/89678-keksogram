@@ -25,7 +25,7 @@
     if (numberPage === 0) {
       renderedPictures.forEach(function(picture) {
         picturesContainer.removeChild(picture.el);
-        picture.remove();
+        //picture.remove();
       });
       renderedPictures = [];
     }

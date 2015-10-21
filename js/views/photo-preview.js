@@ -20,7 +20,7 @@
       'click .likes-count': '_likeThisModel'
     },
     _likeThisModel: function() {
-      this.model._onLike();
+      this.model.toggleLike();
     },
     render: function() {
       this.el.querySelector('.gallery-overlay-image').src = this.model.get('url');
@@ -29,7 +29,6 @@
       this.el.querySelector('.likes-count').innerHTML = this.model.get('likes');
       this.el.querySelector('.comments-count').innerHTML = this.model.get('comments');
     },
-
 
     _onPhotoLoadError: function(evt) {
       clearTimeout(this._onPhotoLoadTimeOut);
@@ -46,6 +45,5 @@
       image.removeEventListener('error', this._onPhotoLoadError);
     }
   });
-
   window.GalleryPicture = GalleryPicture;
 })();

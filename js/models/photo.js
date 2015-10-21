@@ -3,25 +3,13 @@
 (function() {
   var PhotoModel = Backbone.Model.extend({
     initialize: function() {
-      this._onLike = this._onLike.bind(this);
+      this.toggleLike = this.toggleLike.bind(this);
     },
-    like: function() {
-      this.set('liked', true);
-    },
-    dislike: function() {
-      this.set('liked', false);
-    },
-    _onLike: function() {
-      if (!this.get('liked')) {
-        this.set('likes', this.get('likes') + 1);
-        this.like();
-      } else {
-        this.set('likes', this.get('likes') - 1);
-        this.dislike();
-      }
+    toggleLike: function() {
+      var likes = this.get('likes')
+      var liked = this.get('liked')
+      this.set({'liked': !liked, 'likes': liked ? likes - 1 : likes + 1});
     }
   });
-
   window.PhotoModel = PhotoModel;
-
 })();
