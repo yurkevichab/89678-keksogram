@@ -1,4 +1,4 @@
-/* global Backbone: true PhotoView true*/
+/* global Backbone: true PhotoView: true*/
 'use strict';
 
 (function() {

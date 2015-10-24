@@ -1,4 +1,4 @@
-/* global Backbone:true GalleryPicture: true */
+/* global Backbone: true GalleryPicture: true */
 'use strict';
 (function() {
   var keys = {
@@ -54,7 +54,7 @@
   Gallery.prototype.show = function() {
     this._element.classList.remove('invisible');
     this._closeButton.addEventListener('click', this._onCloseClick);
-    document.addEventListener('keydown', this._onDocumentKeyDown);console.log('!!!!!!!!!!!');
+    document.addEventListener('keydown', this._onDocumentKeyDown);
     this._showCurrentPhoto(this._currentPhoto);
   };
 

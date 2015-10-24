@@ -137,7 +137,7 @@
     });
   }
 
-  photosCollection.fetch({timeout: REQUEST_FAILURE_TIMEOUT}).success(function(loaded, state, jqXHR) {
+  photosCollection.fetch({timeout: REQUEST_FAILURE_TIMEOUT}).success(function() {
     initFilters();
     initScroll();
     var activeFilter = localStorage.getItem('picturesFilter') || 'popular';
