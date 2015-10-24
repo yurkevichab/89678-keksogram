@@ -3,7 +3,6 @@
 (function() {
   var REQUEST_FAILURE_TIMEOUT = 10000;
   var picturesTemplate = document.querySelector('.picture-template');
-
   var PhotoView = Backbone.View.extend({
     initialize: function() {
       this._onClick = this._onClick.bind(this);
@@ -11,42 +10,35 @@
       this._onPhotoLoadError = this._onPhotoLoadError.bind(this);
       this.setElement(picturesTemplate.content.children[0].cloneNode(true));
       this.listenTo(this.model, 'change', this.render);
+      this._photo = this.el.querySelector('img');
     },
-    className: 'picture',
     events: {
       'click': '_onClick',
-      'click .picture-likes': '_likeThisModel'
+      'click .picture-likes': '_likeThisPhoto'
     },
-    _likeThisModel: function(evt) {
+    _likeThisPhoto: function(evt) {
       evt.preventDefault();
       this.model.toggleLike();
     },
-
     render: function() {
-      var newPictureImg = new Image();
-      newPictureImg.src = this.model.get('url');
+      this._photo.src = this.model.get('url');
       this.el.querySelector('.picture-likes').innerHTML = this.model.get('likes');
       this.el.querySelector('.picture-comments').innerHTML = this.model.get('comments');
-
-      this._onPhotoLoadTimeOut = setTimeout(function() {
-        this.el.classList.add('picture-load-failure');
-      }.bind(this), REQUEST_FAILURE_TIMEOUT);
-      newPictureImg.addEventListener('load', this._onPhotoLoad);
-      newPictureImg.addEventListener('error', this._onPhotoLoadError);
+      this._onPhotoLoadTimeOut = setTimeout(this._onPhotoLoadError, REQUEST_FAILURE_TIMEOUT);
+      this._photo.addEventListener('load', this._onPhotoLoad);
+      this._photo.addEventListener('error', this._onPhotoLoadError);
     },
-    _onPhotoLoad: function(evt) {
+    _onPhotoLoad: function() {
       clearTimeout(this._onPhotoLoadTimeOut);
-      this.el.querySelector('img').src = evt.target.src;
-      this._cleanupImageListeners(evt.target);
+      this._cleanupImageListeners();
     },
-    _onPhotoLoadError: function(evt) {
-      this._cleanupImageListeners(evt.target);
-      this.model.set('url', '');
+    _onPhotoLoadError: function() {
+      this._cleanupImageListeners();
       this.el.classList.add('picture-load-failure');
     },
-    _cleanupImageListeners: function(image) {
-      image.removeEventListener('load', this._onPhotoLoad);
-      image.removeEventListener('error', this._onPhotoLoadError);
+    _cleanupImageListeners: function() {
+      this._photo.removeEventListener('load', this._onPhotoLoad);
+      this._photo.removeEventListener('error', this._onPhotoLoadError);
     },
     _onClick: function(evt) {
       evt.preventDefault();

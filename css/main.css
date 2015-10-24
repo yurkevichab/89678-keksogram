@@ -303,10 +303,6 @@ input[type=radio]:checked + .upload-filter-label {
 .picture-big-load-failure {
   background: url('../img/icon-cross.png') no-repeat center black;
   opacity: 0.8;
-  line-height: 182px;
-  cursor: default;
-  border: dotted 1px #ddd;
-  display: block;
   height: 640px;
   width: 640px;
 }

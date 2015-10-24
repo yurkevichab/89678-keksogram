@@ -1,48 +1,43 @@
-/* global Backbone: true*/
+/* global Backbone: true PhotoView true*/
 'use strict';
 
 (function() {
-
   var REQUEST_FAILURE_TIMEOUT = 10000;
   var template = document.querySelector('.gallery-overlay-preview').cloneNode(true);
   var GalleryPicture = Backbone.View.extend({
     initialize: function() {
+      this.prototype = new PhotoView();
       this._onPhotoLoad = this._onPhotoLoad.bind(this);
       this._onPhotoLoadError = this._onPhotoLoadError.bind(this);
       var el = template.cloneNode(true);
       this.setElement(el);
       this._onPhotoLoadTimeOut = setTimeout(this._onPhotoLoadError, REQUEST_FAILURE_TIMEOUT);
-      this.model.set('liked', false);
+      this._photo = this.el.querySelector('.gallery-overlay-image');
       this.render();
       this.listenTo(this.model, 'change', this.render);
     },
     events: {
-      'click .likes-count': '_likeThisModel'
+      'click .likes-count': '_likeThisPhoto'
     },
-    _likeThisModel: function() {
+    _likeThisPhoto: function() {
       this.model.toggleLike();
     },
     render: function() {
-      this.el.querySelector('.gallery-overlay-image').src = this.model.get('url');
-      this.el.querySelector('.gallery-overlay-image').addEventListener('error', this._onPhotoLoadError);
-      this.el.querySelector('.gallery-overlay-image').addEventListener('load', this._onPhotoLoad);
+      this._photo.src = this.model.get('url');
+      this._photo.addEventListener('error', this._onPhotoLoadError);
+      this._photo.addEventListener('load', this._onPhotoLoad);
       this.el.querySelector('.likes-count').innerHTML = this.model.get('likes');
       this.el.querySelector('.comments-count').innerHTML = this.model.get('comments');
     },
-
-    _onPhotoLoadError: function(evt) {
+    _onPhotoLoadError: function() {
       clearTimeout(this._onPhotoLoadTimeOut);
-      this.el.querySelector('.gallery-overlay-image').classList.add('picture-big-load-failure');
-      this._cleanupImageListeners(evt.target);
+      this._photo.classList.add('picture-big-load-failure');
+      this.model.set('url', '');
+      this.prototype._cleanupImageListeners();
     },
-    _onPhotoLoad: function(evt) {
+    _onPhotoLoad: function() {
       clearTimeout(this._onPhotoLoadTimeOut);
-      this._cleanupImageListeners(evt.target);
-    },
-
-    _cleanupImageListeners: function(image) {
-      image.removeEventListener('load', this._onPhotoLoad);
-      image.removeEventListener('error', this._onPhotoLoadError);
+      this.prototype._cleanupImageListeners();
     }
   });
   window.GalleryPicture = GalleryPicture;

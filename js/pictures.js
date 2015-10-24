@@ -9,7 +9,6 @@
   var PAGE_SIZE = 12;
   var photosCollection = new PhotosCollection();
   var gallery = new Gallery();
-  var pictures;
   var renderedPictures = [];
   var currentPage = 0;
   var picturesContainer = document.querySelector('.pictures');
@@ -112,7 +111,7 @@
   }
 
   function isNextPageAvailible() {
-    return !!pictures && currentPage < Math.ceil(pictures.length / PAGE_SIZE);
+    return !!photosCollection && currentPage < Math.ceil(photosCollection.length / PAGE_SIZE);
   }
 
   function isBottom() {
@@ -139,7 +138,6 @@
   }
 
   photosCollection.fetch({timeout: REQUEST_FAILURE_TIMEOUT}).success(function(loaded, state, jqXHR) {
-    pictures = jqXHR.responseJSON;
     initFilters();
     initScroll();
     var activeFilter = localStorage.getItem('picturesFilter') || 'popular';

@@ -54,8 +54,7 @@
   Gallery.prototype.show = function() {
     this._element.classList.remove('invisible');
     this._closeButton.addEventListener('click', this._onCloseClick);
-    document.addEventListener('keydown', this._onDocumentKeyDown);
-    this._pictureElement.addEventListener('click', this._onPhotoClick);
+    document.addEventListener('keydown', this._onDocumentKeyDown);console.log('!!!!!!!!!!!');
     this._showCurrentPhoto(this._currentPhoto);
   };
 
@@ -88,6 +87,7 @@
     this.galleryPicture = new GalleryPicture({model: this._photos.at(this._currentPhoto)});
     this._element.replaceChild(this.galleryPicture.el, this._pictureElement);
     this._pictureElement = this.galleryPicture.el;
+    this._pictureElement.addEventListener('click', this._onPhotoClick);
   };
   window.Gallery = Gallery;
 })();
