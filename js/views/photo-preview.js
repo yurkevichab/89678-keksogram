@@ -6,7 +6,6 @@
   var template = document.querySelector('.gallery-overlay-preview').cloneNode(true);
   var GalleryPicture = PhotoView.extend({
     initialize: function() {
-    // this.prototype = new PhotoView();
       this._onPhotoLoad = this._onPhotoLoad.bind(this);
       this._onPhotoLoadError = this._onPhotoLoadError.bind(this);
       var el = template.cloneNode(true);
