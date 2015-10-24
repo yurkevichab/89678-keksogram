@@ -4,9 +4,9 @@
 (function() {
   var REQUEST_FAILURE_TIMEOUT = 10000;
   var template = document.querySelector('.gallery-overlay-preview').cloneNode(true);
-  var GalleryPicture = Backbone.View.extend({
+  var GalleryPicture = PhotoView.extend({
     initialize: function() {
-      this.prototype = new PhotoView();
+    // this.prototype = new PhotoView();
       this._onPhotoLoad = this._onPhotoLoad.bind(this);
       this._onPhotoLoadError = this._onPhotoLoadError.bind(this);
       var el = template.cloneNode(true);
@@ -19,9 +19,6 @@
     events: {
       'click .likes-count': '_likeThisPhoto'
     },
-    _likeThisPhoto: function() {
-      this.model.toggleLike();
-    },
     render: function() {
       this._photo.src = this.model.get('url');
       this._photo.addEventListener('error', this._onPhotoLoadError);
@@ -33,11 +30,7 @@
       clearTimeout(this._onPhotoLoadTimeOut);
       this._photo.classList.add('picture-big-load-failure');
       this.model.set('url', '');
-      this.prototype._cleanupImageListeners();
-    },
-    _onPhotoLoad: function() {
-      clearTimeout(this._onPhotoLoadTimeOut);
-      this.prototype._cleanupImageListeners();
+      this._cleanupImageListeners();
     }
   });
   window.GalleryPicture = GalleryPicture;
