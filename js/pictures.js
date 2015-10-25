@@ -5,15 +5,50 @@
  */
 'use strict';
 (function() {
+  /**
+   * @const
+   * @type {number}
+   */
   var REQUEST_FAILURE_TIMEOUT = 10000;
+  /**
+   * @const
+   * @type {number}
+   */
   var PAGE_SIZE = 12;
+  /**
+   * @type {Backbone.Collections}
+   */
   var photosCollection = new PhotosCollection();
+  /**
+   *  @type {Backbone.View}
+   */
   var gallery = new Gallery();
+  /**
+   *
+   *  @type {Array}
+   */
   var renderedPictures = [];
+  /**
+   * Интекс текущей страницы
+   *  @type {number}
+   */
   var currentPage = 0;
+  /**
+   * Контейнер картинок
+   *  @type {Element}
+   */
   var picturesContainer = document.querySelector('.pictures');
+  /**
+   * Элемент переключатели фильтров
+   * @type {Element}
+   */
   var filters = document.querySelector('.filters');
 
+  /**
+   *
+   * Добавляет фото на страницу по 12 штук
+   * @param {number} numberPage
+   */
   function renderPictures(numberPage) {
     var pictureFragment = document.createDocumentFragment();
     var picturesFrom = numberPage * PAGE_SIZE;
@@ -33,17 +68,24 @@
       pictureFragment.appendChild(view.el);
 
       view.on('galleryclick', function() {
-        gallery.setCurrentPhotoByUrl(photosCollection.indexOf(model));
+        gallery.setCurrentIndexfromModel(model);
         gallery.show();
       });
     });
     picturesContainer.appendChild(pictureFragment);
   }
 
+  /**
+   * Если картинка не загрузилась добавляется класс ошибки загрузки
+   */
   function showLoadFailure() {
     picturesContainer.classList.add('pictures-failure');
   }
 
+  /**
+   * Выполняет сортировку коллекции и добавляет значение текущей сортировки в localStorage
+   * @param {string} filerValue
+   */
   function filterPictures(filerValue) {
     switch (filerValue) {
       case 'new':
@@ -95,6 +137,10 @@
     localStorage.setItem('picturesFilter', filerValue);
   }
 
+  /**
+   * В зависимости от фильтра перерисовывает фото
+   * @param {string} filterID
+   */
   function setActiveFilter(filterID) {
     filterPictures(filterID);
     currentPage = 0;
@@ -102,6 +148,9 @@
     gallery.setPhotos(photosCollection);
   }
 
+  /**
+   * Добавлет Элементу фильтрам событие нажатия
+   */
   function initFilters() {
     filters.addEventListener('click', function(evt) {
       if (evt.target.tagName === 'INPUT') {
@@ -110,21 +159,35 @@
     });
   }
 
+  /**
+   * Проверяет возможно ли отрисовать еще страницу с фото
+   * @returns {boolean}
+   */
   function isNextPageAvailible() {
     return !!photosCollection && currentPage < Math.ceil(photosCollection.length / PAGE_SIZE);
   }
 
+  /**
+   * Проверяет опустились ли мы достаточно по странице
+   * @returns {boolean}
+   */
   function isBottom() {
     var GAP = 100;
     return picturesContainer.getBoundingClientRect().bottom - GAP <= window.innerHeight;
   }
 
+  /**
+   * Стреляет событием разрешающим отисовку еще фото
+   */
   function checkNextPage() {
     if (isNextPageAvailible() && isBottom()) {
       window.dispatchEvent(new CustomEvent('loadrender'));
     }
   }
 
+  /**
+   * Метод добавлет события причастные к scroll
+   */
   function initScroll() {
     var someTimeOut;
     window.addEventListener('scroll', function() {
@@ -137,6 +200,9 @@
     });
   }
 
+  /**
+   * Загрузка коллекции Backbone
+   */
   photosCollection.fetch({timeout: REQUEST_FAILURE_TIMEOUT}).success(function() {
     initFilters();
     initScroll();

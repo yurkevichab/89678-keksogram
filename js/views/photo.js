@@ -1,7 +1,15 @@
 /* global Backbone: true */
 'use strict';
 (function() {
+  /**
+   * @const
+   * @type {number}
+   */
   var REQUEST_FAILURE_TIMEOUT = 10000;
+  /**
+   * Копия шаблона блока картинки
+   * @type {Element}
+   */
   var picturesTemplate = document.querySelector('.picture-template');
   var PhotoView = Backbone.View.extend({
     initialize: function() {
@@ -16,30 +24,58 @@
       'click': '_onClick',
       'click .picture-likes': '_likeThisPhoto'
     },
+    /**
+     *Добавляет Like к фото
+     * @param evt
+     * @private
+     */
     _likeThisPhoto: function(evt) {
       evt.preventDefault();
       this.model.toggleLike();
     },
     render: function() {
       this._photo.src = this.model.get('url');
-      this.el.querySelector('.picture-likes').innerHTML = this.model.get('likes');
-      this.el.querySelector('.picture-comments').innerHTML = this.model.get('comments');
       this._onPhotoLoadTimeOut = setTimeout(this._onPhotoLoadError, REQUEST_FAILURE_TIMEOUT);
       this._photo.addEventListener('load', this._onPhotoLoad);
       this._photo.addEventListener('error', this._onPhotoLoadError);
+      this.loadLikesComments();
     },
+    /**
+     * Выводит колличество лайков и комментов
+     */
+    loadLikesComments: function() {
+      this.el.querySelector('.picture-likes').innerHTML = this.model.get('likes');
+      this.el.querySelector('.picture-comments').innerHTML = this.model.get('comments');
+    },
+
+    /**
+     * @event PhotoView#load
+     * @private
+     */
     _onPhotoLoad: function() {
       clearTimeout(this._onPhotoLoadTimeOut);
-      this._cleanupImageListeners();
+      this.cleanupImageListeners();
     },
+    /**
+     * @event PhotoView#error
+     * @private
+     */
     _onPhotoLoadError: function() {
-      this._cleanupImageListeners();
+      this.cleanupImageListeners();
       this.el.classList.add('picture-load-failure');
     },
-    _cleanupImageListeners: function() {
+    /**
+     * Убирает события у картинки
+     */
+    cleanupImageListeners: function() {
       this._photo.removeEventListener('load', this._onPhotoLoad);
       this._photo.removeEventListener('error', this._onPhotoLoadError);
     },
+    /**
+     * Запуск события для показа галереи
+     * @event PhotoView#click
+     * @private
+     */
     _onClick: function(evt) {
       evt.preventDefault();
       if (!evt.target.classList.contains('picture-load-failure') && !evt.target.classList.contains('picture-likes')) {

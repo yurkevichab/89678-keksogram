@@ -5,6 +5,9 @@
     initialize: function() {
       this.toggleLike = this.toggleLike.bind(this);
     },
+    /**
+     * Устанавливает значения количества лайков и флаг нажатия кнопки лайк на фото
+     */
     toggleLike: function() {
       var likes = this.get('likes');
       var liked = this.get('liked');
