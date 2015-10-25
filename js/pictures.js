@@ -1,130 +1,156 @@
-/* global Photo: true Gallery: true */
+/* global
+ Gallery: true
+ PhotosCollection: true
+ PhotoView: true
+ */
 'use strict';
 (function() {
-  var ReadyState = {
-    'UNSENT': 0,
-    'OPENED': 1,
-    'HEADERS_RECEIVED': 2,
-    'LOADING': 3,
-    'DONE': 4
-  };
-
+  /**
+   * @const
+   * @type {number}
+   */
   var REQUEST_FAILURE_TIMEOUT = 10000;
+  /**
+   * @const
+   * @type {number}
+   */
   var PAGE_SIZE = 12;
-
-  var pictures;
+  /**
+   * @type {Backbone.Collections}
+   */
+  var photosCollection = new PhotosCollection();
+  /**
+   *  @type {Backbone.View}
+   */
   var gallery = new Gallery();
+  /**
+   *
+   *  @type {Array}
+   */
   var renderedPictures = [];
-  var currentPictures;
+  /**
+   * Интекс текущей страницы
+   *  @type {number}
+   */
   var currentPage = 0;
+  /**
+   * Контейнер картинок
+   *  @type {Element}
+   */
   var picturesContainer = document.querySelector('.pictures');
+  /**
+   * Элемент переключатели фильтров
+   * @type {Element}
+   */
   var filters = document.querySelector('.filters');
 
-  function renderPictures(data, numberPage) {
+  /**
+   *
+   * Добавляет фото на страницу по 12 штук
+   * @param {number} numberPage
+   */
+  function renderPictures(numberPage) {
+    var pictureFragment = document.createDocumentFragment();
+    var picturesFrom = numberPage * PAGE_SIZE;
+    var picturesTo = picturesFrom + PAGE_SIZE;
     numberPage = numberPage || 0;
+
     if (numberPage === 0) {
       renderedPictures.forEach(function(picture) {
-        picture.unrender();
+        picture.remove();
       });
       renderedPictures = [];
     }
-    var pictureFragment = document.createDocumentFragment();
+    photosCollection.slice(picturesFrom, picturesTo).forEach(function(model) {
+      var view = new PhotoView({model: model});
+      view.render();
+      renderedPictures.push(view);
+      pictureFragment.appendChild(view.el);
 
-    var picturesFrom = numberPage * PAGE_SIZE;
-    var picturesTo = picturesFrom + PAGE_SIZE;
-    data = data.slice(picturesFrom, picturesTo);
-
-    data.forEach(function(arr) {
-      var newPicture = new Photo(arr);
-      newPicture.render(pictureFragment);
-      renderedPictures.push(newPicture);
+      view.on('galleryclick', function() {
+        gallery.setCurrentIndexfromModel(model);
+        gallery.show();
+      });
     });
     picturesContainer.appendChild(pictureFragment);
   }
 
+  /**
+   * Если картинка не загрузилась добавляется класс ошибки загрузки
+   */
   function showLoadFailure() {
     picturesContainer.classList.add('pictures-failure');
   }
 
-  function loadPictures(callback) {
-    filters.classList.add('hidden');
-    var xhr = new XMLHttpRequest();
-    xhr.timeout = REQUEST_FAILURE_TIMEOUT;
-    xhr.open('Get', 'data/pictures.json');
-    xhr.send();
-
-    xhr.onreadystatechange = function() {
-      switch (xhr.readyState) {
-        case ReadyState.DONE:
-          picturesContainer.classList.remove('pictures-loading');
-          if (xhr.status === 200) {
-            var data = xhr.response;
-            callback(JSON.parse(data));
-            filters.classList.remove('hidden');
-          }
-          if (xhr.status >= 400) {
-            showLoadFailure();
-          }
-          break;
-        case ReadyState.OPENED:
-        case ReadyState.HEADERS_RECEIVED:
-        case ReadyState.LOADING:
-        default:
-          picturesContainer.classList.add('pictures-loading');
-          break;
-      }
-    };
-    xhr.ontimeout = function() {
-      picturesContainer.classList.remove('pictures-loading');
-      showLoadFailure();
-    };
-  }
-
-  function filterPictures(arrPictures, filerValue) {
-    var newFilerPictures = arrPictures.slice(0);
+  /**
+   * Выполняет сортировку коллекции и добавляет значение текущей сортировки в localStorage
+   * @param {string} filerValue
+   */
+  function filterPictures(filerValue) {
     switch (filerValue) {
       case 'new':
-        newFilerPictures = newFilerPictures.sort(function(a, b) {
-          if (a.date > b.date) {
+
+        photosCollection.comparator = function(a, b) {
+          if (a.get('date') > b.get('date')) {
             return -1;
           }
-          if (a.date === b.date) {
+          if (a.get('date') === b.get('date')) {
             return 0;
           }
-          if (a.date < b.date) {
+          if (a.get('date') < b.get('date')) {
             return 1;
           }
-        });
+        };
+
+        photosCollection.sort();
         break;
       case 'discussed':
-        newFilerPictures = newFilerPictures.sort(function(a, b) {
-          if (a.comments > b.comments) {
+        photosCollection.comparator = (function(a, b) {
+          if (a.get('comments') > b.get('comments')) {
             return -1;
           }
-          if (a.comments === b.comments) {
+          if (a.get('comments') === b.get('comments')) {
             return 0;
           }
-          if (a.comments < b.comments) {
+          if (a.get('comments') < b.get('comments')) {
             return 1;
           }
         });
+        photosCollection.sort();
         break;
       case 'popular':
       default:
-        newFilerPictures = arrPictures.slice(0);
+        photosCollection.comparator = (function(a, b) {
+          if (a.get('likes') > b.get('likes')) {
+            return -1;
+          }
+          if (a.get('likes') === b.get('likes')) {
+            return 0;
+          }
+          if (a.get('likes') < b.get('likes')) {
+            return 1;
+          }
+        });
+        photosCollection.sort();
         break;
     }
     localStorage.setItem('picturesFilter', filerValue);
-    return newFilerPictures;
   }
 
+  /**
+   * В зависимости от фильтра перерисовывает фото
+   * @param {string} filterID
+   */
   function setActiveFilter(filterID) {
-    currentPictures = filterPictures(pictures, filterID);
+    filterPictures(filterID);
     currentPage = 0;
-    renderPictures(currentPictures, currentPage);
-    gallery.setPhotos(getPhotos());
+    renderPictures(currentPage);
+    gallery.setPhotos(photosCollection);
   }
 
+  /**
+   * Добавлет Элементу фильтрам событие нажатия
+   */
   function initFilters() {
     filters.addEventListener('click', function(evt) {
       if (evt.target.tagName === 'INPUT') {
@@ -133,27 +159,35 @@
     });
   }
 
+  /**
+   * Проверяет возможно ли отрисовать еще страницу с фото
+   * @returns {boolean}
+   */
   function isNextPageAvailible() {
-    return !!pictures && currentPage < Math.ceil(pictures.length / PAGE_SIZE);
+    return !!photosCollection && currentPage < Math.ceil(photosCollection.length / PAGE_SIZE);
   }
 
+  /**
+   * Проверяет опустились ли мы достаточно по странице
+   * @returns {boolean}
+   */
   function isBottom() {
     var GAP = 100;
     return picturesContainer.getBoundingClientRect().bottom - GAP <= window.innerHeight;
   }
 
+  /**
+   * Стреляет событием разрешающим отисовку еще фото
+   */
   function checkNextPage() {
     if (isNextPageAvailible() && isBottom()) {
       window.dispatchEvent(new CustomEvent('loadrender'));
     }
   }
 
-  function getPhotos() {
-    return currentPictures.map(function(obj) {
-      return obj.url;
-    });
-  }
-
+  /**
+   * Метод добавлет события причастные к scroll
+   */
   function initScroll() {
     var someTimeOut;
     window.addEventListener('scroll', function() {
@@ -162,25 +196,20 @@
     });
     window.addEventListener('loadrender', function() {
       currentPage++;
-      renderPictures(currentPictures, currentPage);
+      renderPictures(currentPage);
     });
   }
 
-  function initGallery() {
-    window.addEventListener('galleryclick', function(evt) {
-      gallery.setCurrentPhotoByUrl(evt.detail.pictureElement.getCurrentPhoto());
-      gallery.show();
-    });
-  }
-
-  initFilters();
-  initGallery();
-  initScroll();
-
-  loadPictures(function(data) {
-    pictures = data;
+  /**
+   * Загрузка коллекции Backbone
+   */
+  photosCollection.fetch({timeout: REQUEST_FAILURE_TIMEOUT}).success(function() {
+    initFilters();
+    initScroll();
     var activeFilter = localStorage.getItem('picturesFilter') || 'popular';
     filters['filter'].value = activeFilter;
     setActiveFilter(activeFilter);
+  }).fail(function() {
+    showLoadFailure();
   });
 })();
