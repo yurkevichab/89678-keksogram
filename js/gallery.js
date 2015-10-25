@@ -2,7 +2,6 @@
 'use strict';
 (function() {
   /**
-   *
    * @type {Object.<string, number>}
    */
   var keys = {
@@ -12,7 +11,6 @@
   };
 
   /**
-   *
    * @param {Array} arr
    * @param {number} index
    * @returns {boolean}
@@ -41,8 +39,7 @@
   };
   /**
    * В зависимости от нажатой клавиши выполняет дейтвия закрытия галереи/следующее/предыдущее фото
-   * @event Gallery#keydown
-   * @param {event} evt
+   * @param {Event} evt
    * @private
    */
   Gallery.prototype._onDocumentKeyDown = function(evt) {
@@ -80,8 +77,7 @@
     this._showCurrentPhoto(this._currentPhoto);
   };
   /**
-   * @event Gallery#click
-   * @param {event} evt
+   * @param {Event} evt
    * @private
    */
   Gallery.prototype._onPhotoClick = function(evt) {
@@ -91,7 +87,7 @@
   };
   /**
    * Нажатие по крестику в галерее
-   * @param {event} evt
+   * @param {Event} evt
    * @private
    */
   Gallery.prototype._onCloseClick = function(evt) {

@@ -25,8 +25,8 @@
       'click .picture-likes': '_likeThisPhoto'
     },
     /**
-     *Добавляет Like к фото
-     * @param evt
+     * Добавляет Like к фото
+     * @param {Event} evt
      * @private
      */
     _likeThisPhoto: function(evt) {
@@ -49,7 +49,6 @@
     },
 
     /**
-     * @event PhotoView#load
      * @private
      */
     _onPhotoLoad: function() {
@@ -57,7 +56,6 @@
       this.cleanupImageListeners();
     },
     /**
-     * @event PhotoView#error
      * @private
      */
     _onPhotoLoadError: function() {
@@ -73,7 +71,6 @@
     },
     /**
      * Запуск события для показа галереи
-     * @event PhotoView#click
      * @private
      */
     _onClick: function(evt) {

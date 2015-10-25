@@ -24,7 +24,6 @@
    */
   var gallery = new Gallery();
   /**
-   *
    *  @type {Array}
    */
   var renderedPictures = [];
@@ -45,7 +44,6 @@
   var filters = document.querySelector('.filters');
 
   /**
-   *
    * Добавляет фото на страницу по 12 штук
    * @param {number} numberPage
    */
@@ -89,7 +87,6 @@
   function filterPictures(filerValue) {
     switch (filerValue) {
       case 'new':
-
         photosCollection.comparator = function(a, b) {
           if (a.get('date') > b.get('date')) {
             return -1;
@@ -101,7 +98,6 @@
             return 1;
           }
         };
-
         photosCollection.sort();
         break;
       case 'discussed':
