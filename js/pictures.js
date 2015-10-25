@@ -24,7 +24,6 @@
    */
   var gallery = new Gallery();
   /**
-   *
    *  @type {Array}
    */
   var renderedPictures = [];
@@ -45,7 +44,6 @@
   var filters = document.querySelector('.filters');
 
   /**
-   *
    * Добавляет фото на страницу по 12 штук
    * @param {number} numberPage
    */

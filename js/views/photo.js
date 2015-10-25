@@ -25,8 +25,8 @@
       'click .picture-likes': '_likeThisPhoto'
     },
     /**
-     *Добавляет Like к фото
-     * @param evt
+     * Добавляет Like к фото
+     * @param {Event} evt
      * @private
      */
     _likeThisPhoto: function(evt) {

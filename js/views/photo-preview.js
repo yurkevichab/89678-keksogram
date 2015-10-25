@@ -31,7 +31,6 @@
     /**
      * @private
      * @override
-     * @event GalleryPicture#load
      */
     _onPhotoLoadError: function() {
       clearTimeout(this._onPhotoLoadTimeOut);
