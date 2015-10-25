@@ -49,7 +49,6 @@
     },
 
     /**
-     * @event PhotoView#load
      * @private
      */
     _onPhotoLoad: function() {
@@ -57,7 +56,6 @@
       this.cleanupImageListeners();
     },
     /**
-     * @event PhotoView#error
      * @private
      */
     _onPhotoLoadError: function() {
@@ -73,7 +71,6 @@
     },
     /**
      * Запуск события для показа галереи
-     * @event PhotoView#click
      * @private
      */
     _onClick: function(evt) {

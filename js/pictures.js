@@ -89,7 +89,6 @@
   function filterPictures(filerValue) {
     switch (filerValue) {
       case 'new':
-
         photosCollection.comparator = function(a, b) {
           if (a.get('date') > b.get('date')) {
             return -1;
@@ -101,7 +100,6 @@
             return 1;
           }
         };
-
         photosCollection.sort();
         break;
       case 'discussed':

@@ -41,7 +41,6 @@
   };
   /**
    * В зависимости от нажатой клавиши выполняет дейтвия закрытия галереи/следующее/предыдущее фото
-   * @event Gallery#keydown
    * @param {event} evt
    * @private
    */
@@ -80,7 +79,6 @@
     this._showCurrentPhoto(this._currentPhoto);
   };
   /**
-   * @event Gallery#click
    * @param {event} evt
    * @private
    */
