@@ -41,6 +41,8 @@
    * Событие изменения кнопки Сторона. Почему все едет...Картинка смещается.
    */
   resizeSize.addEventListener('change', function() {
-    resizer.setConstraint(resizer.getConstraint().x,resizer.getConstraint().y,resizeSize.value);
+   resizer.getConstraint().side= resizeSize.value;
+    resizer.redraw();
+   // resizer.setConstraint(resizer.getConstraint().x,resizer.getConstraint().y,resizeSize.value);
   });
 })();
