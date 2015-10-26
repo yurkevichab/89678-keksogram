@@ -18,7 +18,7 @@
     this._image.onload = function() {
       // Размер холста равен размеру загруженного изображения. Это нужно
       // для удобства работы с координатами.
-      var resizeForm = document.forms['upload-resize'];
+     // var resizeForm = document.forms['upload-resize'];
       this._container.width = this._image.naturalWidth;//resizeForm.querySelector('.resize-image-preview').width;
       this._container.height = this._image.naturalHeight; //resizeForm.querySelector('.resize-image-preview').height;
 

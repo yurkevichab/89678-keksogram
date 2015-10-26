@@ -5,10 +5,10 @@
   var resizeForm = document.forms['upload-resize'];
   var filterForm = document.forms['upload-filter'];
 
-  var resizeX = resizeForm['x'];
-  var resizeY = resizeForm['y'];
+  //var resizeX = resizeForm['x'];
+ // var resizeY = resizeForm['y'];
   var resizeSize = resizeForm['size'];
-  var previewImage = resizeForm.querySelector('.resize-image-preview');
+ // var previewImage = resizeForm.querySelector('.resize-image-preview');
   var prevButton = resizeForm['resize-prev'];
   prevButton.onclick = function(evt) {
     evt.preventDefault();
