@@ -1,3 +1,4 @@
+/* global resizer: true*/
 'use strict';
 (function() {
   var uploadForm = document.forms['upload-select-image'];
@@ -41,8 +42,8 @@
    * Событие изменения кнопки Сторона. Почему все едет...Картинка смещается.
    */
   resizeSize.addEventListener('change', function() {
-   resizer.getConstraint().side= resizeSize.value;
+    resizer.getConstraint().side = resizeSize.value;
     resizer.redraw();
-   // resizer.setConstraint(resizer.getConstraint().x,resizer.getConstraint().y,resizeSize.value);
+    // resizer.setConstraint(resizer.getConstraint().x,resizer.getConstraint().y,resizeSize.value);
   });
 })();
