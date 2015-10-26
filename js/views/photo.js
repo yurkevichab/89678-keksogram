@@ -10,7 +10,7 @@
    * Копия шаблона блока картинки
    * @type {Element}
    */
-  var picturesTemplate = document.querySelector('.picture-template');
+  var picturesTemplate = document.querySelector('#picture-template');
   var PhotoView = Backbone.View.extend({
     initialize: function() {
       this._onClick = this._onClick.bind(this);

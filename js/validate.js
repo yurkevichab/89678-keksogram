@@ -4,16 +4,16 @@
   var filterForm = document.forms['upload-filter'];
 
   var resizeImage = resizeForm.querySelector('.resize-image-preview');
-  var resizeX = resizeForm['resize-x'];
-  var resizeY = resizeForm['resize-y'];
-  var resizeSize = resizeForm['resize-size'];
+  var resizeX = resizeForm['x'];
+  var resizeY = resizeForm['y'];
+  var resizeSize = resizeForm['size'];
   var inputsFilter = filterForm['upload-filter'];
 
   var maxWidth = 0, maxHeight = 0;
 
   resizeX.min = resizeX.value = 0;
   resizeY.min = resizeY.value = 0;
-  resizeSize.min = resizeSize.value = 1;
+  resizeSize.min = resizeSize.value = 50;
 
   function dateForCookie() {
     var date = new Date();
