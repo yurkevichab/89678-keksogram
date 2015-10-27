@@ -38,6 +38,7 @@
       resizeX.max = maxWidth - resizeSize.value;
       resizeY.max = maxHeight - resizeSize.value;
       resizeSize.max = Math.min(maxWidth - resizeX.value, maxHeight - resizeY.value);
+      resizer.setConstraint( resizer.getConstraint().x, resizer.getConstraint().y, resizer.getConstraint().side);
     }
   }
 
