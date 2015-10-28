@@ -76,6 +76,13 @@
     _resizeConstraint: null,
 
     /**
+     * Возвращение размеров текущей картинки
+     */
+    thisImageSize: function() {
+      return this._image;
+    },
+
+    /**
      * Отрисовка канваса.
      */
     redraw: function() {

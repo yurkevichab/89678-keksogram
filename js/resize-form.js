@@ -8,11 +8,11 @@
   var resizeX = resizeForm['x'];
   var resizeY = resizeForm['y'];
   var resizeSize = resizeForm['size'];
-  var previewImage = resizeForm.querySelector('.resize-image-preview');
   var prevButton = resizeForm['resize-prev'];
 
   resizeX.min = resizeX.value = 0;
   resizeY.min = resizeY.value = 0;
+
   prevButton.onclick = function(evt) {
     evt.preventDefault();
     resizeForm.reset();
@@ -23,22 +23,13 @@
 
   resizeForm.onsubmit = function(evt) {
     evt.preventDefault();
-    filterForm.elements['filter-image-src'] = previewImage.src;
+
     filterForm.querySelector('.filter-image-preview').src = resizer.exportImage().src;
     resizeForm.classList.add('invisible');
     filterForm.classList.remove('invisible');
   };
 
   window.addEventListener('resizerchange', function() {
-    var maxWidth = previewImage.width;
-    var maxHeight = previewImage.height;
-    var x = resizeX.value;
-    var y = resizeY.value;
-    var s = resizeSize.value;
-    if (x + s > maxWidth || y + s > maxHeight) {
-      resizeSize.max = Math.min(maxWidth - resizeX.value, maxHeight - resizeY.value);
-      resizer.setConstraint(resizer.getConstraint().x, resizer.getConstraint().y, resizer.getConstraint().side);
-    }
     resizeX.value = parseInt(resizer.getConstraint().x, 10);
     resizeY.value = parseInt(resizer.getConstraint().y, 10);
   });
@@ -47,7 +38,6 @@
     resizeSize.value = parseInt(resizer.getConstraint().side, 10);
     resizeX.value = parseInt(resizer.getConstraint().x, 10);
     resizeY.value = parseInt(resizer.getConstraint().y, 10);
-    previewImage.style.display = 'none';
   });
 
   resizeSize.addEventListener('change', function() {
