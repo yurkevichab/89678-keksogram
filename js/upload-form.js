@@ -40,6 +40,7 @@
       resizeForm.classList.remove('invisible');
     });
   };
+
   uploadForm.onreset = function() {
     fileElement.classList.remove('upload-input-hasvalue');
   };

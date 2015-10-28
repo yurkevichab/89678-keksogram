@@ -10,6 +10,7 @@
   var resizeSize = resizeForm['size'];
   var previewImage = resizeForm.querySelector('.resize-image-preview');
   var prevButton = resizeForm['resize-prev'];
+
   resizeX.min = resizeX.value = 0;
   resizeY.min = resizeY.value = 0;
   prevButton.onclick = function(evt) {
@@ -34,14 +35,19 @@
     var x = resizeX.value;
     var y = resizeY.value;
     var s = resizeSize.value;
-    if (((x + s) > maxWidth) || ((y + s) > maxHeight)) {
+    if (x + s > maxWidth || y + s > maxHeight) {
       resizeSize.max = Math.min(maxWidth - resizeX.value, maxHeight - resizeY.value);
       resizer.setConstraint(resizer.getConstraint().x, resizer.getConstraint().y, resizer.getConstraint().side);
     }
+    resizeX.value = parseInt(resizer.getConstraint().x, 10);
+    resizeY.value = parseInt(resizer.getConstraint().y, 10);
   });
 
   window.addEventListener('pictureload', function() {
     resizeSize.value = parseInt(resizer.getConstraint().side, 10);
+    resizeX.value = parseInt(resizer.getConstraint().x, 10);
+    resizeY.value = parseInt(resizer.getConstraint().y, 10);
+    previewImage.style.display = 'none';
   });
 
   resizeSize.addEventListener('change', function() {

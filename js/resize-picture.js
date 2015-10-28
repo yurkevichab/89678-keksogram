@@ -13,15 +13,13 @@
     // Холст.
     this._container = document.createElement('canvas');
     this._ctx = this._container.getContext('2d');
+
     // Создаем холст только после загрузки изображения.
     this._image.onload = function() {
       // Размер холста равен размеру загруженного изображения. Это нужно
       // для удобства работы с координатами.
-      var resizeForm = document.forms['upload-resize'];
-
       this._container.width = this._image.naturalWidth;
       this._container.height = this._image.naturalHeight;
-      resizeForm.querySelector('.resize-image-preview').style.display = 'none';
       /**
        * Предлагаемый размер кадра в виде коэффициента относительно меньшей
        * стороны изображения.
@@ -77,7 +75,6 @@
      */
     _resizeConstraint: null,
 
-
     /**
      * Отрисовка канваса.
      */
@@ -102,6 +99,7 @@
       // Отрисовка прямоугольника, обозначающего область изображения после
       // кадрирования. Координаты задаются от центра.
       //
+
       this._ctx.strokeStyle = '#FFE753';
       this._ctx.lineWidth = 6;
       this._ctx.setLineDash([15, 10]);
@@ -225,11 +223,11 @@
     setConstraint: function(x, y, side) {
       var rightX = x + this._resizeConstraint.side;
       var rightY = y + this._resizeConstraint.side;
-      if (typeof x !== 'undefined' && x > 0 && rightX < this._container.width) {
+      if (x >= 0 && rightX <= this._container.width) {
         this._resizeConstraint.x = x;
       }
 
-      if (typeof y !== 'undefined' && y > 0 && rightY < this._container.height) {
+      if (y >= 0 && rightY <= this._container.height) {
         this._resizeConstraint.y = y;
       }
 
