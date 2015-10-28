@@ -9,6 +9,7 @@
     // Изображение, с которым будет вестись работа.
     this._image = new Image();
     this._image.src = image;
+
     // Холст.
     this._container = document.createElement('canvas');
     this._ctx = this._container.getContext('2d');
@@ -16,9 +17,11 @@
     this._image.onload = function() {
       // Размер холста равен размеру загруженного изображения. Это нужно
       // для удобства работы с координатами.
-      //var resizeForm = document.forms['upload-resize'];
+      var resizeForm = document.forms['upload-resize'];
+
       this._container.width = this._image.naturalWidth;
       this._container.height = this._image.naturalHeight;
+      resizeForm.querySelector('.resize-image-preview').style.display = 'none';
       /**
        * Предлагаемый размер кадра в виде коэффициента относительно меньшей
        * стороны изображения.
@@ -220,11 +223,13 @@
      * @param {number} side
      */
     setConstraint: function(x, y, side) {
-      if (typeof x !== 'undefined') {
+      var rightX = x + this._resizeConstraint.side;
+      var rightY = y + this._resizeConstraint.side;
+      if (typeof x !== 'undefined' && x > 0 && rightX < this._container.width) {
         this._resizeConstraint.x = x;
       }
 
-      if (typeof y !== 'undefined') {
+      if (typeof y !== 'undefined' && y > 0 && rightY < this._container.height) {
         this._resizeConstraint.y = y;
       }
 
@@ -260,13 +265,6 @@
         this._resizeConstraint.side,
         this._resizeConstraint.side);
 
-      // Получаем ImageData из области изначального изображения.
-      var imageData = this._ctx.getImageData(
-        this._resizeConstraint.x,
-        this._resizeConstraint.y,
-        this._resizeConstraint.side,
-        this._resizeConstraint.side);
-
       // Создается новый canvas, по размерам совпадающий с кадрированным
       // изображением, в него добавляется ImageData взятый из изначального
       // изображения и сохраняется в dataURL, с помощью метода toDataURL.
@@ -276,7 +274,7 @@
       var temporaryCtx = temporaryCanvas.getContext('2d');
       temporaryCanvas.width = this._resizeConstraint.side;
       temporaryCanvas.height = this._resizeConstraint.side;
-      temporaryCtx.putImageData(imageData, 0, 0);
+      temporaryCtx.drawImage(this._image, -this._resizeConstraint.x, -this._resizeConstraint.y);
       imageToExport.src = temporaryCanvas.toDataURL('image/png');
 
       return imageToExport;

@@ -41,13 +41,13 @@
   });
 
   window.addEventListener('pictureload', function() {
-    resizeSize.value = resizer.getConstraint().side;
+    resizeSize.value = parseInt(resizer.getConstraint().side, 10);
   });
 
   resizeSize.addEventListener('change', function() {
     resizer.setConstraint(
       resizer.getConstraint().x - ((resizeSize.value - resizer.getConstraint().side) / 2),
       resizer.getConstraint().y - ((resizeSize.value - resizer.getConstraint().side) / 2),
-      resizeSize.value);
+      parseFloat(resizeSize.value));
   });
 })();
