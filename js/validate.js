@@ -32,7 +32,6 @@
     var s = resizeSize.value;
     if (x + s > maxWidth || y + s > maxHeight) {
       resizeSize.max = Math.min(maxWidth - x, maxHeight - y);
-      resizer.setConstraint();
     }
   }
 
