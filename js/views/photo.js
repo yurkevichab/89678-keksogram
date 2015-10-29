@@ -34,7 +34,11 @@
       this.model.toggleLike();
     },
     render: function() {
-      this._photo.src = this.model.get('url');
+      if (this.model.get('preview')) {
+        this._photo.src = this.model.get('preview');
+      } else {
+        this._photo.src = this.model.get('url');
+      }
       this._onPhotoLoadTimeOut = setTimeout(this._onPhotoLoadError, REQUEST_FAILURE_TIMEOUT);
       this._photo.addEventListener('load', this._onPhotoLoad);
       this._photo.addEventListener('error', this._onPhotoLoadError);

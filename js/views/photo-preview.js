@@ -37,7 +37,8 @@
       this._photo.classList.add('picture-big-load-failure');
       this.model.set('url', '');
       this.cleanupImageListeners();
-    }
+    },
+    destroy: function() {}
   });
   window.GalleryPicture = GalleryPicture;
 })();
