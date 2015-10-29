@@ -1,4 +1,4 @@
-/* global Backbone: true GalleryPicture: true */
+/* global Backbone: true GalleryPicture: true GalleryVideo: true */
 'use strict';
 (function() {
   /**

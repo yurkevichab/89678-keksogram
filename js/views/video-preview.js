@@ -25,7 +25,7 @@
       this._video.controls = false;
       this._video.autoplay = false;
       this._video.autoplay = true;
-      this._video.poster = this.model.get('preview')
+      this._video.poster = this.model.get('preview');
       this._video.src = this.model.get('url');
       this.el.replaceChild(this._video, this._photo);
     },
