@@ -1,4 +1,4 @@
-/* global Backbone: true GalleryPicture: true */
+/* global Backbone: true GalleryPicture: true GalleryVideo: true */
 'use strict';
 (function() {
   /**
@@ -30,7 +30,7 @@
     this._element = document.querySelector('.gallery-overlay');
     this._closeButton = document.querySelector('.gallery-overlay-close');
     this._pictureElement = this._element.querySelector('.gallery-overlay-preview');
-    this.galleryPicture = new Backbone.Model();
+    this.galleryPicture = null;
     this._currentPhoto = 0;
     this.currentKey = '';
     this._onCloseClick = this._onCloseClick.bind(this);
@@ -62,6 +62,9 @@
    * Метод для скрытия блока галереи
    */
   Gallery.prototype.hide = function() {
+    if (this.galleryPicture) {
+      this.galleryPicture.destroy();
+    }
     this._element.classList.add('invisible');
     this._closeButton.removeEventListener('click', this._onCloseClick);
     document.removeEventListener('keydown', this._onDocumentKeyDown);
@@ -123,7 +126,13 @@
    * @private
    */
   Gallery.prototype._showCurrentPhoto = function() {
-    this.galleryPicture = new GalleryPicture({model: this._photos.at(this._currentPhoto)});
+    var currentModel = this._photos.at(this._currentPhoto);
+    if (currentModel.get('preview')) {
+      this.galleryPicture = new GalleryVideo({model: currentModel});
+    } else {
+      this.galleryPicture = new GalleryPicture({model: currentModel});
+    }
+
     this._element.replaceChild(this.galleryPicture.el, this._pictureElement);
     this._pictureElement = this.galleryPicture.el;
     this._pictureElement.addEventListener('click', this._onPhotoClick);
