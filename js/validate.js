@@ -1,19 +1,13 @@
+/* global resizer: true*/
 'use strict';
 (function() {
   var resizeForm = document.forms['upload-resize'];
   var filterForm = document.forms['upload-filter'];
 
-  var resizeImage = resizeForm.querySelector('.resize-image-preview');
-  var resizeX = resizeForm['resize-x'];
-  var resizeY = resizeForm['resize-y'];
-  var resizeSize = resizeForm['resize-size'];
+  var resizeX = resizeForm['x'];
+  var resizeY = resizeForm['y'];
+  var resizeSize = resizeForm['size'];
   var inputsFilter = filterForm['upload-filter'];
-
-  var maxWidth = 0, maxHeight = 0;
-
-  resizeX.min = resizeX.value = 0;
-  resizeY.min = resizeY.value = 0;
-  resizeSize.min = resizeSize.value = 1;
 
   function dateForCookie() {
     var date = new Date();
@@ -31,13 +25,13 @@
   }
 
   function validate() {
+    var maxWidth = resizer.thisImageSize().width;
+    var maxHeight = resizer.thisImageSize().height;
     var x = resizeX.value;
     var y = resizeY.value;
     var s = resizeSize.value;
-    if (((x + s) > maxWidth) || ((y + s) > maxHeight)) {
-      resizeX.max = maxWidth - resizeSize.value;
-      resizeY.max = maxHeight - resizeSize.value;
-      resizeSize.max = Math.min(maxWidth - resizeX.value, maxHeight - resizeY.value);
+    if (x + s > maxWidth || y + s > maxHeight) {
+      resizeSize.max = Math.min(maxWidth - x, maxHeight - y);
     }
   }
 
@@ -45,9 +39,5 @@
   resizeY.onchange = validate;
   resizeSize.onchange = validate;
 
-  resizeImage.onload = function() {
-    maxWidth = this.width;
-    maxHeight = this.height;
-  };
   filterToCookie();
 })();
