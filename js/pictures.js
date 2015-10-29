@@ -134,6 +134,20 @@
   }
 
   /**
+   * Если есть hash с сортировкой то устанавливаем подсветку input и сортируем,если нет то дефолтом ставим popular
+   */
+  function parseURL() {
+    var currenthach = location.hash.match(/^#filters\/(\S+)$/);
+    if (currenthach) {
+      filters['filter'].value = currenthach[1];
+      setActiveFilter(currenthach[1]);
+    } else {
+      location.hash = 'filters/' + filters['filter'].value;
+    }
+
+  }
+
+  /**
    * В зависимости от фильтра перерисовывает фото
    * @param {string} filterID
    */
@@ -150,9 +164,10 @@
   function initFilters() {
     filters.addEventListener('click', function(evt) {
       if (evt.target.tagName === 'INPUT') {
-        setActiveFilter(evt.target.value);
+        location.hash = 'filters/' + evt.target.value;
       }
     });
+    window.addEventListener('hashchange', parseURL);
   }
 
   /**
@@ -202,9 +217,7 @@
   photosCollection.fetch({timeout: REQUEST_FAILURE_TIMEOUT}).success(function() {
     initFilters();
     initScroll();
-    var activeFilter = localStorage.getItem('picturesFilter') || 'popular';
-    filters['filter'].value = activeFilter;
-    setActiveFilter(activeFilter);
+    parseURL();
   }).fail(function() {
     showLoadFailure();
   });
