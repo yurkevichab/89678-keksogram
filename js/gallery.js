@@ -126,10 +126,11 @@
    * @private
    */
   Gallery.prototype._showCurrentPhoto = function() {
-    if (this._photos.at(this._currentPhoto).get('preview')) {
-      this.galleryPicture = new GalleryVideo({model: this._photos.at(this._currentPhoto)});
+    var currentModel = this._photos.at(this._currentPhoto);
+    if (currentModel.get('preview')) {
+      this.galleryPicture = new GalleryVideo({model: currentModel});
     } else {
-      this.galleryPicture = new GalleryPicture({model: this._photos.at(this._currentPhoto)});
+      this.galleryPicture = new GalleryPicture({model: currentModel});
     }
 
     this._element.replaceChild(this.galleryPicture.el, this._pictureElement);
