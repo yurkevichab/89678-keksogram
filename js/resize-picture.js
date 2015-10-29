@@ -166,6 +166,7 @@
      * @private
      */
     _onDragStart: function(evt) {
+      evt.preventDefault();
       this._enterDragMode(evt.clientX, evt.clientY);
     },
 
