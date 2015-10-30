@@ -27,6 +27,10 @@ define([
    * @type {number}
    */
   var PAGE_SIZE = 12;
+  /**
+   *
+   * @type {Object.<string, number>}
+   */
   var filtersList = {
     'popular': 'popular',
     'new': 'new',
@@ -153,14 +157,14 @@ define([
    * Вынимаем hach, проверяем существование и если оно есть среди текущего списка фильтров- уставливаем input и запускаем setActiveFilter
    * если
    */
-  function parseURL() {
-    var currentHach = location.hash.match(/^#filters\/(\S+)$/);
-    var filterFromHach = filtersList.popular;
-    if (currentHach) {
-      filterFromHach = filtersList[currentHach[1]] ? currentHach[1] : filtersList.popular;
+  function setFilterFromHash() {
+    var currentHash = location.hash.match(/^#filters\/(\S+)$/);
+    var filterFromHash = filtersList.popular;
+    if (currentHash && filtersList[currentHash[1]]) {
+      filterFromHash = currentHash[1];
     }
-    filters['filter'].value = filterFromHach;
-    setActiveFilter(filterFromHach);
+    filters['filter'].value = filterFromHash;
+    setActiveFilter(filterFromHash);
   }
 
   /**
@@ -183,7 +187,7 @@ define([
         location.hash = 'filters/' + evt.target.value;
       }
     });
-    window.addEventListener('hashchange', parseURL);
+    window.addEventListener('hashchange', setFilterFromHash);
   }
 
   /**
@@ -233,7 +237,7 @@ define([
   photosCollection.fetch({timeout: REQUEST_FAILURE_TIMEOUT}).success(function() {
     initFilters();
     initScroll();
-    parseURL();
+    setFilterFromHash();
   }).fail(function() {
     showLoadFailure();
   });
