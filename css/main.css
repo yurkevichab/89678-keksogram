@@ -305,6 +305,7 @@ input[type=radio]:checked + .upload-filter-label {
   border: solid 1px rgba(255, 255, 255, 0.2);
   opacity: 0.3;
   line-height: 182px;
+  cursor: default;
 }
 
 .picture-load-failure img {
@@ -312,7 +313,12 @@ input[type=radio]:checked + .upload-filter-label {
   height: 182px;
   width: 182px;
 }
-
+.picture-big-load-failure {
+  background: url('../img/icon-cross.png') no-repeat center black;
+  opacity: 0.8;
+  height: 640px;
+  width: 640px;
+}
 .picture-stats {
   background: rgba(0, 0, 0, 0.3);
   border-radius: 2px;

@@ -1,7 +1,9 @@
-/* global Backbone: true PhotoView: true*/
+/* global Backbone: true*/
 'use strict';
 
-(function() {
+define([
+  'views/photo'
+], function(PhotoView) {
   /**
    * Копия блока картинки
    * @type {Element}
@@ -38,7 +40,8 @@
       this.model.set('url', '');
       this.cleanupImageListeners();
     },
-    destroy: function() {}
+    destroy: function() {
+    }
   });
-  window.GalleryPicture = GalleryPicture;
-})();
+  return GalleryPicture;
+});

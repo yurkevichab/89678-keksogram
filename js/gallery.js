@@ -1,6 +1,9 @@
-/* global Backbone: true GalleryPicture: true GalleryVideo: true */
+/* global Backbone: true */
 'use strict';
-(function() {
+define([
+  'views/photo-preview',
+  'views/video-preview'
+], function(GalleryPicture, GalleryVideo) {
   /**
    * @type {Object.<string, number>}
    */
@@ -137,5 +140,5 @@
     this._pictureElement = this.galleryPicture.el;
     this._pictureElement.addEventListener('click', this._onPhotoClick);
   };
-  window.Gallery = Gallery;
-})();
+  return Gallery;
+});

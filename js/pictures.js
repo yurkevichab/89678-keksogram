@@ -1,10 +1,22 @@
-/* global
- Gallery: true
- PhotosCollection: true
- PhotoView: true
- */
 'use strict';
-(function() {
+
+requirejs.config({
+  baseUrl: 'js'
+});
+
+define([
+  'models/photos',
+  'views/photo',
+  'gallery',
+
+  'models/photo',
+  'filter-form',
+  'logo-background',
+  'resize-form',
+  'resize-picture',
+  'upload-form',
+  'validate'
+], function(PhotosCollection, PhotoView, Gallery) {
   /**
    * @const
    * @type {number}
@@ -137,14 +149,14 @@
    * Если есть hash с сортировкой то устанавливаем подсветку input и сортируем,если нет то дефолтом ставим popular
    */
   function parseURL() {
+    filters['filter'].value = 'popular';
     var currenthach = location.hash.match(/^#filters\/(\S+)$/);
     if (currenthach) {
       filters['filter'].value = currenthach[1];
       setActiveFilter(currenthach[1]);
     } else {
-      location.hash = 'filters/' + filters['filter'].value;
+      setActiveFilter('popular');
     }
-
   }
 
   /**
@@ -221,4 +233,4 @@
   }).fail(function() {
     showLoadFailure();
   });
-})();
+});

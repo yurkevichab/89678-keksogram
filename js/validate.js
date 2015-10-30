@@ -1,6 +1,6 @@
 /* global resizer: true*/
 'use strict';
-(function() {
+define(function() {
   var resizeForm = document.forms['upload-resize'];
   var filterForm = document.forms['upload-filter'];
 
@@ -40,4 +40,4 @@
   resizeSize.onchange = validate;
 
   filterToCookie();
-})();
+});

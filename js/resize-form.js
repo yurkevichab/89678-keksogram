@@ -1,6 +1,6 @@
 /* global resizer: true*/
 'use strict';
-(function() {
+define(function() {
   var uploadForm = document.forms['upload-select-image'];
   var resizeForm = document.forms['upload-resize'];
   var filterForm = document.forms['upload-filter'];
@@ -46,4 +46,4 @@
       resizer.getConstraint().y - ((resizeSize.value - resizer.getConstraint().side) / 2),
       parseFloat(resizeSize.value));
   });
-})();
+});

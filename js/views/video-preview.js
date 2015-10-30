@@ -1,7 +1,9 @@
-/* global Backbone: true GalleryPicture: true*/
+/* global Backbone: true*/
 'use strict';
 
-(function() {
+define([
+  'views/photo-preview'
+], function(GalleryPicture) {
   var template = document.querySelector('.gallery-overlay-preview').cloneNode(true);
   var GalleryVideo = GalleryPicture.extend({
     initialize: function() {
@@ -48,5 +50,5 @@
       }
     }
   });
-  window.GalleryVideo = GalleryVideo;
-})();
+  return GalleryVideo;
+});

@@ -1,6 +1,6 @@
-/* global Backbone: true */
+/* global Backbone: true*/
 'use strict';
-(function() {
+define(function() {
   var PhotoModel = Backbone.Model.extend({
     initialize: function() {
       this.toggleLike = this.toggleLike.bind(this);
@@ -14,5 +14,5 @@
       this.set({'liked': !liked, 'likes': liked ? likes - 1 : likes + 1});
     }
   });
-  window.PhotoModel = PhotoModel;
-})();
+  return PhotoModel;
+});
