@@ -27,6 +27,11 @@ define([
    * @type {number}
    */
   var PAGE_SIZE = 12;
+  var filtersList = {
+    'popular': 'popular',
+    'new': 'new',
+    'discussed': 'discussed'
+  }
   /**
    * @type {Backbone.Collections}
    */
@@ -98,7 +103,7 @@ define([
    */
   function filterPictures(filerValue) {
     switch (filerValue) {
-      case 'new':
+      case filtersList.new:
         photosCollection.comparator = function(a, b) {
           if (a.get('date') > b.get('date')) {
             return -1;
@@ -112,7 +117,7 @@ define([
         };
         photosCollection.sort();
         break;
-      case 'discussed':
+      case filtersList.discussed:
         photosCollection.comparator = (function(a, b) {
           if (a.get('comments') > b.get('comments')) {
             return -1;
@@ -126,7 +131,7 @@ define([
         });
         photosCollection.sort();
         break;
-      case 'popular':
+      case filtersList.popular:
       default:
         photosCollection.comparator = (function(a, b) {
           if (a.get('likes') > b.get('likes')) {
@@ -145,17 +150,17 @@ define([
   }
 
   /**
-   * Если есть hash с сортировкой то устанавливаем подсветку input и сортируем,если нет то дефолтом ставим popular
+   * Вынимаем hach, проверяем существование и если оно есть среди текущего списка фильтров- уставливаем input и запускаем setActiveFilter
+   * если
    */
   function parseURL() {
-    filters['filter'].value = 'popular';
     var currenthach = location.hash.match(/^#filters\/(\S+)$/);
+    var filterFromHach = filtersList.popular;
     if (currenthach) {
-      filters['filter'].value = currenthach[1];
-      setActiveFilter(currenthach[1]);
-    } else {
-      setActiveFilter('popular');
+      filterFromHach = filtersList[currenthach[1]] ? currenthach[1] : filtersList.popular;
     }
+    filters['filter'].value = filterFromHach;
+    setActiveFilter(filterFromHach);
   }
 
   /**
