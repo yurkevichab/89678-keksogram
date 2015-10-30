@@ -154,10 +154,10 @@ define([
    * если
    */
   function parseURL() {
-    var currenthach = location.hash.match(/^#filters\/(\S+)$/);
+    var currentHach = location.hash.match(/^#filters\/(\S+)$/);
     var filterFromHach = filtersList.popular;
-    if (currenthach) {
-      filterFromHach = filtersList[currenthach[1]] ? currenthach[1] : filtersList.popular;
+    if (currentHach) {
+      filterFromHach = filtersList[currentHach[1]] ? currentHach[1] : filtersList.popular;
     }
     filters['filter'].value = filterFromHach;
     setActiveFilter(filterFromHach);
