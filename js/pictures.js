@@ -93,7 +93,7 @@ define([
   }
 
   /**
-   * Выполняет сортировку коллекции и добавляет значение текущей сортировки в localStorage
+   * Выполняет сортировку коллекции и добавляет значение текущей сортировки
    * @param {string} filerValue
    */
   function filterPictures(filerValue) {
@@ -142,7 +142,6 @@ define([
         photosCollection.sort();
         break;
     }
-    localStorage.setItem('picturesFilter', filerValue);
   }
 
   /**
