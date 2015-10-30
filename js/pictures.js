@@ -31,7 +31,7 @@ define([
     'popular': 'popular',
     'new': 'new',
     'discussed': 'discussed'
-  }
+  };
   /**
    * @type {Backbone.Collections}
    */
